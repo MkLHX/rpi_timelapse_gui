@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+	<div class="container-fluid">
+		<div class="row h-100" style="min-height: 100vh;">
+			<div class="col-2 bg-light align-self-center">
+				<div class="col p-3">
+					<h1 class="h3">Timelapse App</h1>
+				</div>
+				<div class="col card p-3 mb-1">
+					<h5>Timelapse Settings</h5>
+					<hr>
+					{{form_start(timelapseForm)}}
+					{{form_errors(timelapseForm)}}
+					{{form_end(timelapseForm)}}
+				</div>
+				<div class="col card p-3 mb-1">
+					<h5>FTP Settings</h5>
+					<hr>
+					{{form_start(ftpForm)}}
+					{{form_errors(ftpForm)}}
+					{{form_end(ftpForm)}}
+				</div>
+			</div>
+			<div class="col">
+				<div class="row h-100">
+					<div class="col align-self-center text-center py-5">
+						<div id="timelapse-carousel" class="carousel slide" data-ride="carousel" data-interval="false">
+							<ol class="carousel-indicators" style="bottom: -70px !important;">
+								{% for key, picture in pictures %}
+									{% set full_path = picture %}
+									<img src="{{ full_path }}" class="img-fluid mx-1 {% if key == 0 %} active {% endif %}" alt="timelapse-{{ picture }}-indicator" data-target="#timelapse-carousel" data-slide-to="{{key}}" style="width: 4vw !important;">
+								{% endfor %}
+							</ol>
+							<div class="carousel-inner">
+								{% for key, picture in pictures %}
+									{% set full_path = picture %}
+									<div class="carousel-item {% if key == 0 %} active {% endif %}">
+										<img src="{{ full_path }}" class="img-fluid w-75" alt="timelapse-{{ picture }}">
+									</div>
+								{% endfor %}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		$('#').on('submit', function () {});
+	</script>
+{% endblock %}
