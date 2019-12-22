@@ -9,14 +9,14 @@
 				<div class="col card p-3 mb-1">
 					<h5>Timelapse Settings</h5>
 					<hr>
-					{{form_start(timelapseForm)}}
+					{{form_start(timelapseForm, {'attr':{'id':'timelapse_form', 'name':'timelapse_form'}})}}
 					{{form_errors(timelapseForm)}}
 					{{form_end(timelapseForm)}}
 				</div>
 				<div class="col card p-3 mb-1">
 					<h5>FTP Settings</h5>
 					<hr>
-					{{form_start(ftpForm)}}
+					{{form_start(ftpForm, {'attr':{'id':'ftp_form', 'name':'ftp_form'}})}}
 					{{form_errors(ftpForm)}}
 					{{form_end(ftpForm)}}
 				</div>

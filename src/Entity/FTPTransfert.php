@@ -18,16 +18,24 @@ class FTPTransfert
     private $id;
 
     /**
+     * @Assert\NotBlank
+     * @Assert\Regex(
+     *      pattern="/^([a-z.-]*|(0-9)|((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))$/",
+     *      match=true,
+     *      message="Host can be domain or ipv4 ftp.domain.com or 192.168.0.12"
+     * )
      * @ORM\Column(type="string", length=255)
      */
     private $host;
 
     /**
+     * @Assert\NotBlank
      * @ORM\Column(type="string", length=255)
      */
     private $login;
 
     /**
+     * @Assert\NotBlank
      * @ORM\Column(type="string", length=255)
      */
     private $password;
@@ -35,7 +43,7 @@ class FTPTransfert
     /**
      * @Assert\NotBlank
      * @Assert\Regex(
-     *      pattern="/^(\/[a-zA-Z_]([a-zA-Z-_ ]*))*$/",
+     *      pattern="/^(\/[a-zA-Z0-9_]([a-zA-Z0-9-_ ]*))*$/",
      *      match=true,
      *      message="Path should looks /ftp_folder/timelapse or /ftp-folder/_timelapse"
      * )

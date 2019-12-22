@@ -1,8 +1,9 @@
 #!/bin/bash
 SHELL=/bin/sh
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
-# Timelapse
 DATE=$(date +"%Y-%m-%d_%H%M")
+# Timelapse
+PICS_RESOLUTION="1920/1080"
 PICS_EXT="jpg"
 LOCAL_PICS_PATH="/tmp/timelapse"
 # FTP
@@ -12,7 +13,7 @@ FTP_PASS="hWaJT86hfCFdKAcn"         #This is the password for the FTP user.
 FTP_PICS_PATH="/Disque dur/_timelapse"
 
 # 1 - timelapse part
-fswebcam -r 1920x1080 -p ${PICS_EXT} --no-banner ${LOCAL_PICS_PATH}/$DATE.${PICS_EXT}
+fswebcam -r ${PICS_RESOLUTION} -p ${PICS_EXT} --no-banner ${LOCAL_PICS_PATH}/$DATE.${PICS_EXT}
 
 # 2 - FTP part
 # Call 1. Uses the ftp command with the -inv switches.

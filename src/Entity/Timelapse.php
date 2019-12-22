@@ -19,6 +19,7 @@ class Timelapse
     private $id;
 
     /**
+     * @Assert\NotBlank
      * @ORM\Column(type="string", length=255)
      */
     private $resolution;
@@ -43,7 +44,7 @@ class Timelapse
     /**
      * @Assert\NotBlank
      * @Assert\Regex(
-     *      pattern="/^(\/[a-zA-Z_]([a-zA-Z-_ ]*))*$/",
+     *      pattern="/^(\/[a-zA-Z0-9_]([a-zA-Z0-9-_ ]*))*$/",
      *      match=true,
      *      message="Path should looks /my/timelapse/folder or /my-timelapse/_folder"
      * )

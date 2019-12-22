@@ -38,6 +38,11 @@ class TimelapseController extends AbstractController
             $timelapse = new Timelapse();
         }
 
+        $ftpTransfert = $fTPTransfertRepository->findOneBy([], ['id' => 'DESC']);
+        if (null == $ftpTransfert) {
+            $ftpTransfert = new FTPTransfert();
+        }
+
         $resolOpts = ['384x288' => '384x288', '640x480' => '640x480', '1920x1080' => '1920x1080',];
         $extensions = ['PNG' => 'PNG', 'JPEG' => 'JPEG', 'JPG' => 'JPG', 'MJPEG' => 'MJPEG',];
         $timelapseForm = $this->createFormBuilder($timelapse)
@@ -61,7 +66,7 @@ class TimelapseController extends AbstractController
                 'attr' => [
                     'placeholder' => '/tmp/timelapse',
                     'class' => 'form-control',
-                    'pattern' => '^(\/[a-zA-Z_]([a-zA-Z-_ ]*))*$',
+                    'pattern' => '^(\/[a-zA-Z0-9_]([a-zA-Z0-9-_ ]*))*$',
                 ]
             ])
             ->add('schedule', TextType::class, [
@@ -72,27 +77,13 @@ class TimelapseController extends AbstractController
                     'pattern' => '^(\d{1,2} ){1,2}(\* ){2,3}|((\*\/\d{1,2} \d{1,2} |\*\/\d{1,2} |(\d{1,2} ){2})(\* ){3,4})|(?:\* ){4,5}|\@(reboot|weekly|yearly|annually|monthly|daily|hourly)$',
                 ]
             ])
-            ->add('save', SubmitType::class, [
+            ->add('save_timelapse', SubmitType::class, [
                 'label' => 'Submit',
                 'attr' => [
                     'class' => 'btn btn-light mt-2',
                 ]
             ])
             ->getForm();
-
-        $timelapseForm->handleRequest($request);
-        if ($timelapseForm->isSubmitted() && $timelapseForm->isValid()) {
-            $timelapse = $timelapseForm->getData();
-            $entityManager->persist($timelapse);
-            $entityManager->flush();
-            # write timelapse args in bash script
-            return $this->redirectToRoute('timelapse_index');
-        }
-
-        $ftpTransfert = $fTPTransfertRepository->findOneBy([], ['id' => 'DESC']);
-        if (null == $ftpTransfert) {
-            $ftpTransfert = new FTPTransfert();
-        }
 
         $ftpForm = $this->createFormBuilder($ftpTransfert)
             ->add('active', CheckboxType::class, [
@@ -103,6 +94,7 @@ class TimelapseController extends AbstractController
                 'attr' => [
                     'placeholder' => '192.168.0.1 or mydevice.example.com',
                     'class' => 'form-control',
+                    'pattern' => '^([a-z.-]*|(0-9)|((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))$',
                 ]
             ])
             ->add('login', TextType::class, [
@@ -127,7 +119,7 @@ class TimelapseController extends AbstractController
                     'class' => 'form-control',
                 ]
             ])
-            ->add('save', SubmitType::class, [
+            ->add('save_ftp', SubmitType::class, [
                 'label' => 'Submit',
                 'attr' => [
                     'class' => 'btn btn-light mt-2',
@@ -135,8 +127,15 @@ class TimelapseController extends AbstractController
             ])
             ->getForm();
 
+        $timelapseForm->handleRequest($request);
         $ftpForm->handleRequest($request);
-        if ($ftpForm->isSubmitted() && $ftpForm->isValid()) {
+        if ($timelapseForm->isSubmitted() && $timelapseForm->isValid()) {
+            $timelapse = $timelapseForm->getData();
+            $entityManager->persist($timelapse);
+            $entityManager->flush();
+            # write timelapse args in bash script
+            return $this->redirectToRoute('timelapse_index');
+        }elseif ($ftpForm->isSubmitted() && $ftpForm->isValid()) {
             $ftpTransfert = $ftpForm->getData();
             $entityManager->persist($ftpTransfert);
             $entityManager->flush();
