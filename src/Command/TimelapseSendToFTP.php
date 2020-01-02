@@ -8,6 +8,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class TimelapseSendToFTP extends Command
@@ -122,11 +123,16 @@ class TimelapseSendToFTP extends Command
         if (ftp_login($cnx, $login, $pwd)) {
             $output->writeln("<info>Connected to $host</info>");
             $output->writeln("<info>Start sending pictures to $host</info>");
-            foreach ($pictures as $currentPic) {
+            $progressBar = new ProgressBar($output, 100);
+            $progressBar->setFormat('debug');
+            $progressBar->start();
+            foreach ($progressBar->iterate($pictures) as $currentPic) {
+                $progressBar->advance();
                 $picName = preg_split("/\//", $currentPic);
                 $fullPathPic = "$path/$picName[6]";
                 ftp_put($cnx, $fullPathPic, $currentPic, FTP_ASCII);
             }
+            $progressBar->finish();
         }
         ftp_close($cnx);
         $output->writeln("<info>Pictures were sent</info>");
