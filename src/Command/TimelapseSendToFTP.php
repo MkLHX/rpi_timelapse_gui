@@ -107,7 +107,7 @@ class TimelapseSendToFTP extends Command
             ]);
             return 0;
         }
-
+        dump($pictures);
         /**
          * # Call 1. Uses the ftp command with the -inv switches.
          * #-i turns off interactive prompting.
@@ -136,7 +136,7 @@ class TimelapseSendToFTP extends Command
             $output->writeln("<info>Connected to $host</info>");
             $output->writeln("<info>Start sending pictures to $host</info>");
             foreach ($pictures as $currentPic) {
-                ftp_put($cnx, "$path/$currentPic", $localPath/$currentPic, FTP_ASCII);
+                ftp_put($cnx, $path/$currentPic, $localPath/$currentPic, FTP_ASCII);
             }
         }
         ftp_close($cnx);
