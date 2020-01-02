@@ -8,9 +8,18 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class TimelapseSendToFTP extends Command
 {
+    protected $parameter;
+
+    public function __construct(ParameterBagInterface $parameter)
+    {
+        $this->parameter = $parameter;
+
+        parent::__construct();
+    }
     // the name of the command (the part after "bin/console")
     protected static $defaultName = 'app:timelapse:send-to-ftp';
 
@@ -82,8 +91,9 @@ class TimelapseSendToFTP extends Command
 
         $localPath = $input->getOption('local_path');
         if (!$localPath) {
+            $localPath = $this->parameterBag->get('app.timelapse_pics_dir');
             $pathHelper = $this->getHelper('question');
-            $localPathQuestion = new Question('Please enter the local path location where pictures are stored (by default public/timelapse): ', 'public/timelapse');
+            $localPathQuestion = new Question('Please enter the local path location where pictures are stored (by default public/timelapse_pics): ', 'public/timelapse_pics');
             $localPath = $pathHelper->ask($input, $output, $localPathQuestion);
             $output->writeln("<info>You've selected $localPath has local pictures location</info>");
         }
@@ -107,28 +117,6 @@ class TimelapseSendToFTP extends Command
             ]);
             return 0;
         }
-        dump($pictures);
-        /**
-         * # Call 1. Uses the ftp command with the -inv switches.
-         * #-i turns off interactive prompting.
-         * #-n Restrains FTP from attempting the auto-login feature.
-         * #-v enables verbose and progress.
-         *
-         * ftp -inv ${FTP_HOST} << EOF
-         *
-         * # Call 2. Here the login credentials are supplied by calling the variables.
-         *
-         * user ${FTP_USER} ${PASS}
-         *
-         * # Call 3.  Here you will tell FTP to put or get the file.
-         * put ${LOCAL_PICS_PATH}/$DATE.${PICS_EXT} ${FTP_PICS_PATH}/$DATE.${PICS_EXT}"
-         *
-         * # End FTP Connection
-         * bye
-         * EOF
-
-         * sleep 2
-         */
         $output->writeln("<info>initialize connection to $host</info>");
         $cnx = ftp_connect($host) or die("Couldn't connect to $host");
         $output->writeln("<info>Connecting to $host with provided credentials</info>");
@@ -137,9 +125,7 @@ class TimelapseSendToFTP extends Command
             $output->writeln("<info>Start sending pictures to $host</info>");
             foreach ($pictures as $currentPic) {
                 $picName = preg_split("/\//", $currentPic);
-                dump($picName[6]);
                 $fullPathPic = "$path/$picName[6]";
-                dump($fullPathPic);
                 ftp_put($cnx, $fullPathPic, $currentPic, FTP_ASCII);
             }
         }
