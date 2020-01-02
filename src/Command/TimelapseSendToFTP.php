@@ -125,14 +125,14 @@ class TimelapseSendToFTP extends Command
             $output->writeln("<info>Start sending pictures to $host</info>");
             $progressBar = new ProgressBar($output, 100);
             $progressBar->setFormat('debug');
-            $progressBar->start();
+            // $progressBar->start();
             foreach ($progressBar->iterate($pictures) as $currentPic) {
-                $progressBar->advance();
+                // $progressBar->advance();
                 $picName = preg_split("/\//", $currentPic);
                 $fullPathPic = "$path/$picName[6]";
                 ftp_put($cnx, $fullPathPic, $currentPic, FTP_ASCII);
             }
-            $progressBar->finish();
+            // $progressBar->finish();
         }
         ftp_close($cnx);
         $output->writeln("<info>Pictures were sent</info>");
