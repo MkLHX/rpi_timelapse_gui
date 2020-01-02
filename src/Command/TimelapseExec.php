@@ -85,7 +85,7 @@ class TimelapseExec extends Command
         $dateFormatted = $date->format('Y-m-d_H:i:s');
         $extension=\strtolower($extension);
         if(!file_exists($localPath) && !is_dir($localPath)){
-            \mkdir($localPath);
+            exec("sudo mkdir $localPath", $outMakeDir, $retMakeDir);
         }
         if(!is_writable($localPath)){
             exec("sudo chmod -R 755 $localPath", $outWritable, $retWritable);
