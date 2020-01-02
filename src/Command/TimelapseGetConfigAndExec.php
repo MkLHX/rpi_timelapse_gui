@@ -42,7 +42,7 @@ class TimelapseGetConfigAndExec extends Command
         $command = $this->getApplication()->find('app:timelapse:exec');
         $output->writeln([
             '<info>===================================</info>',
-            '<info>Get Timelapse configuration from db</info>',
+            '<info>Getting timelapse configuration from db</info>',
             '<info>===================================</info>',
             '',
         ]);
@@ -82,6 +82,10 @@ class TimelapseGetConfigAndExec extends Command
              */
         }
 
+        $output->writeln([
+            '<info>Configuration loaded</info>',
+            '',
+        ]);
         $execInput = new ArrayInput($arguments);
         $returnCode = $command->run($execInput, $output);
 
