@@ -87,9 +87,11 @@ class TimelapseSendToFTP extends Command
             $localPath = $pathHelper->ask($input, $output, $localPathQuestion);
             $output->writeln("<info>You've selected $localPath has local pictures location</info>");
         }
+        dump($localPath);
 
+        // TODO maybe unusefull because in future we don't ask for the local path to the user
         if (!file_exists($localPath) && !is_dir($localPath)) {
-            $output->writeln('<error>Cannot find local pictures location ' . $localPath . '</error>');
+            $output->writeln("<error>Cannot find local pictures location</error>");
             return 0;
         }
 
@@ -97,7 +99,7 @@ class TimelapseSendToFTP extends Command
         //get pictures from local path
         $globStr = "$localPath/*.{png,jpeg,jpg,mjpeg}";
         $pictures = glob($globStr);
-
+        dump($pictures);
         if (count($pictures) == 0) {
             // stop the command and show warning message if no pictures are found in localPath
             $output->writeln([

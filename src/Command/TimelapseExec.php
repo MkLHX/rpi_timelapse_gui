@@ -80,6 +80,8 @@ class TimelapseExec extends Command
         $date = new DateTime('now');
         $dateFormatted = $date->format('Y-m-d_H:i:s');
         $extension=\strtolower($extension);
+        
+        // TODO maybe unusefull because in future we don't ask for the local path to the user
         if(!file_exists($localPath) && !is_dir($localPath)){
             exec("mkdir public/$localPath", $outMakeDir, $retMakeDir);
             $output->writeln("<info>Local tmp folder public/$localPath has been created</info>");
