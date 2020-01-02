@@ -77,9 +77,9 @@ class TimelapseExec extends Command
         $localPath = $input->getOption('path');
         if (!$localPath) {
             $pathHelper = $this->getHelper('question');
-            $pathQuestion = new Question('Please enter the path location for pics storage (by default /tmp/timelapse): ', '/tmp/timelapse');
+            $pathQuestion = new Question('Please enter the path location for pics storage (by default timelapse): ', 'timelapse');
             $localPath = $pathHelper->ask($input, $output, $pathQuestion);
-            $output->writeln("You've selected $localPath has pics local path");
+            $output->writeln("You've selected public/$localPath has pics local path");
         }
         $date = new DateTime('now');
         $dateFormatted = $date->format('Y-m-d_H:i:s');
