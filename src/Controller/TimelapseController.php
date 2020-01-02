@@ -11,12 +11,11 @@ use App\Repository\TimelapseRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Doctrine\ORM\EntityManagerInterface;
-
+use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\BufferedOutput;
 
 /**
  * @Route("/", name="timelapse")
@@ -57,7 +56,6 @@ class TimelapseController extends AbstractController
 
         $ftpForm->handleRequest($request);
         if ($ftpForm->isSubmitted() && $ftpForm->isValid()) {
-            // $path = str_replace(' ','%20', $ftpForm['path']->getData());
             $ftpTransfert = $ftpForm->getData();
             $entityManager->persist($ftpTransfert);
             $entityManager->flush();
@@ -70,7 +68,7 @@ class TimelapseController extends AbstractController
             $pictures = glob($globStr);
             if (!$pictures) {
                 //dump('glob errors, cannot find the right pictures path');
-                // show warning message
+                //TODO show warning message in flash bag
             }
             if (count($pictures) == 0) {
                 # simulate pictures
@@ -90,5 +88,26 @@ class TimelapseController extends AbstractController
             'ftpForm' => $ftpForm->createView(),
             'pictures' => $pictures
         ]);
+    }
+
+    /**
+     * @Route("", name="_test")
+     */
+    public function test(Request $request,  KernelInterface $kernel)
+    {
+        $application = new Application($kernel);
+        $application->setAutoExit(false);
+
+        $input = new ArrayInput([
+            'command' => 'app:timelapse:get-config-and-exec',
+        ]);
+
+        $output = new BufferedOutput();
+        $application->run($input, $output);
+        $content = $output->fetch();
+
+        //TODO return result in flash bag
+
+        return $this->redirectToRoute("timelapse_index");
     }
 }
