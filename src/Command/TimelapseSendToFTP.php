@@ -91,7 +91,7 @@ class TimelapseSendToFTP extends Command
 
         $localPath = $input->getOption('local_path');
         if (!$localPath) {
-            $localPath = $this->parameterBag->get('app.timelapse_pics_dir');
+            $localPath = $this->parameter->get('app.timelapse_pics_dir');
             $pathHelper = $this->getHelper('question');
             $localPathQuestion = new Question('Please enter the local path location where pictures are stored (by default public/timelapse_pics): ', 'public/timelapse_pics');
             $localPath = $pathHelper->ask($input, $output, $localPathQuestion);
