@@ -83,7 +83,14 @@ class TimelapseExec extends Command
         }
         $date = new DateTime('now');
         $dateFormatted = $date->format('Y-m-d_H:i:s');
-        exec("fswebcam -r $resolution --no-banner $localPath/$dateFormatted.$extension", $out, $ret);
+        $extension=\strtolower($extension);
+        if(!file_exist($localPath) && !is_dir($localPath)){
+            \mkdir($localPath);
+        }
+        if(!is_writable($localPath)){
+            exec("sudo chmod -R 755 $localPath", $outWritable, $retWritable);
+        }
+        exec("fswebcam -r $resolution --no-banner $localPath/$dateFormatted.$extension", $outTakePic, $retTakePic);
 
         // TODO code the ftp part
 
