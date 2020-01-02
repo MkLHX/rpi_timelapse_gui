@@ -85,13 +85,13 @@ class TimelapseExec extends Command
         $dateFormatted = $date->format('Y-m-d_H:i:s');
         $extension=\strtolower($extension);
         if(!file_exists($localPath) && !is_dir($localPath)){
-            exec("mkdir $localPath", $outMakeDir, $retMakeDir);
+            exec("mkdir public/$localPath", $outMakeDir, $retMakeDir);
         }
-        if(!is_writable($localPath)){
-            exec("sudo chmod -R 755 $localPath", $outWritable, $retWritable);
-        }
+        // if(!is_writable($localPath)){
+        //     exec("sudo chmod -R 755 $localPath", $outWritable, $retWritable);
+        // }
         //TODO add condition if no folder creation error before sur fswebcam command
-        exec("fswebcam -r $resolution --no-banner $localPath/$dateFormatted.$extension", $outTakePic, $retTakePic);
+        exec("fswebcam -r $resolution --no-banner public/$localPath/$dateFormatted.$extension", $outTakePic, $retTakePic);
 
         // TODO code the ftp part
         /**
