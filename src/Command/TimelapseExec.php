@@ -30,7 +30,7 @@ class TimelapseExec extends Command
             // Arguments
             ->addOption('resolution', 'res', InputOption::VALUE_OPTIONAL, 'resolution of pictures')
             ->addOption('extension', 'ext', InputOption::VALUE_OPTIONAL, 'extension of pictures')
-            ->addOption('path', 'pth', InputOption::VALUE_OPTIONAL, 'local path where store pictures')
+            ->addOption('path', 'pth', InputOption::VALUE_OPTIONAL, 'local path where store pictures');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
