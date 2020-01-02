@@ -2,14 +2,10 @@
 
 namespace App\Command;
 
-use DateTime;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
-use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -31,8 +27,8 @@ class TimelapseSendToFTP extends Command
             ->addOption('ftp_host', 'host', InputOption::VALUE_OPTIONAL, 'ftp host ip addess of domain')
             ->addOption('ftp_login', 'login', InputOption::VALUE_OPTIONAL, 'ftp login, blank if not needed')
             ->addOption('ftp_pass', 'pwd', InputOption::VALUE_OPTIONAL, 'ftp password, blank if not needed')
-            ->addOption('ftp_path', 'ftppath', InputOption::VALUE_OPTIONAL, 'ftp path where store pics')
-            ->addOption('local_path', 'locpath', InputOption::VALUE_OPTIONAL, 'local path where are stored pics you want send to ftp server');
+            ->addOption('ftp_path', 'ftppth', InputOption::VALUE_OPTIONAL, 'ftp path where store pics')
+            ->addOption('local_path', 'locpth', InputOption::VALUE_OPTIONAL, 'local path where are stored pics you want send to ftp server');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -112,7 +108,7 @@ class TimelapseSendToFTP extends Command
             ]);
             return 0;
         }
-        
+
         /**
          * # Call 1. Uses the ftp command with the -inv switches.
          * #-i turns off interactive prompting.

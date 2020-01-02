@@ -65,14 +65,21 @@ class TimelapseGetConfigAndExec extends Command
             'command' => 'app:timelapse:exec',
             '-res' => $lastTimelapseConf->getResolution(),
             '-ext' => $lastTimelapseConf->getFileExtension(),
-            '-path' => $lastTimelapseConf->getPath(),
+            '-pth' => $lastTimelapseConf->getPath(),
         ];
 
         if ($lastFTPConf && $lastFTPConf->getActive()) {
-            $arguments['-host'] = $lastFTPConf->getHost();
-            $arguments['-login'] = $lastFTPConf->getLogin();
-            $arguments['-pwd'] = $lastFTPConf->getPassword();
-            $arguments['-ftppath'] = $lastFTPConf->getPath();
+            // $arguments['-host'] = $lastFTPConf->getHost();
+            // $arguments['-login'] = $lastFTPConf->getLogin();
+            // $arguments['-pwd'] = $lastFTPConf->getPassword();
+            // $arguments['-ftppth'] = $lastFTPConf->getPath();
+            // TODO code the ftp part
+            /**
+             * Create a command who make ftp connection and pass on arg the local picture root path
+             * Call the ftp command when picture is take
+             * When picture is sent to the FTP server, remove the picture from the tmp folder
+             * check if there is some arguments about ftp command before run it
+             */
         }
 
         $execInput = new ArrayInput($arguments);

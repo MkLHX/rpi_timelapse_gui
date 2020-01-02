@@ -30,7 +30,7 @@ class TimelapseExec extends Command
             // Arguments
             ->addOption('resolution', 'res', InputOption::VALUE_OPTIONAL, 'resolution of pictures')
             ->addOption('extension', 'ext', InputOption::VALUE_OPTIONAL, 'extension of pictures')
-            ->addOption('path', 'path', InputOption::VALUE_OPTIONAL, 'local path where store pictures')
+            ->addOption('path', 'pth', InputOption::VALUE_OPTIONAL, 'local path where store pictures')
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -90,14 +90,6 @@ class TimelapseExec extends Command
         //TODO add condition if no folder creation error before sur fswebcam command
         exec("fswebcam -r $resolution --no-banner public/$localPath/$dateFormatted.$extension", $outTakePic, $retTakePic);
         $output->writeln("<info>Picture was taken</info>");
-
-        // TODO code the ftp part
-        /**
-         * Create a command who make ftp connection and pass on arg the local picture root path
-         * Call the ftp command when picture is take
-         * When picture is sent to the FTP server, remove the picture from the tmp folder
-         * check if there is some arguments about ftp command before run it
-         */
 
         return 0;
     }
