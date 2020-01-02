@@ -59,7 +59,7 @@ class TimelapseSendToFTP extends Command
                 'Please provide the server hostname or ip address: ',
             );
             $host = $hostHelper->ask($input, $output, $hostQuestion);
-            $output->writeln("<info>You've provide $host has ftp server</info>");
+            $output->writeln(["<info>You've provide $host has ftp server</info>", '']);
         }
 
         $login = $input->getOption('ftp_login');
@@ -69,7 +69,7 @@ class TimelapseSendToFTP extends Command
                 "Please provide the ftp login for $host: "
             );
             $login = $loginHelper->ask($input, $output, $loginQuestion);
-            $output->writeln("<info>You've provide $login has ftp server login</info>");
+            $output->writeln(["<info>You've provide $login has ftp server login</info>", '']);
         }
 
         $pwd = $input->getOption('ftp_pass');
@@ -79,7 +79,7 @@ class TimelapseSendToFTP extends Command
                 "Please provide the ftp password for $host: "
             );
             $pwd = $pwdHelper->ask($input, $output, $pwdQuestion);
-            $output->writeln("<info>You've provide $pwd has ftp server password</info>");
+            $output->writeln(["<info>You've provide $pwd has ftp server password</info>", '']);
         }
 
         $path = $input->getOption('ftp_path');
@@ -87,7 +87,7 @@ class TimelapseSendToFTP extends Command
             $pathHelper = $this->getHelper('question');
             $pathQuestion = new Question('Please enter the remote path location where pictures will store (by default ftp root "/"): ', '/');
             $path = $pathHelper->ask($input, $output, $pathQuestion);
-            $output->writeln("<info>You've selected $path has remote pictures ftp location</info>");
+            $output->writeln(["<info>You've selected $path has remote pictures ftp location</info>", '']);
         }
 
         $localPath = $input->getOption('local_path');
@@ -95,11 +95,11 @@ class TimelapseSendToFTP extends Command
             $pathHelper = $this->getHelper('question');
             $localPathQuestion = new Question('Please enter the local path location where pictures are stored (by default ~/public/timelapse_pics): ', $this->parameter->get('app.timelapse_pics_dir'));
             $localPath = $pathHelper->ask($input, $output, $localPathQuestion);
-            $output->writeln("<info>You've selected $localPath has local pictures location</info>");
+            $output->writeln(["<info>You've selected $localPath has local pictures location</info>", '']);
         }
         // TODO maybe unusefull because in future we don't ask for the local path to the user
         if (!file_exists($localPath) && !is_dir($localPath)) {
-            $output->writeln("<error>Cannot find local pictures location $localPath</error>");
+            $output->writeln(["<error>Cannot find local pictures location $localPath</error>", '']);
             return 0;
         }
 
@@ -117,28 +117,25 @@ class TimelapseSendToFTP extends Command
             ]);
             return 0;
         }
-        $output->writeln("<info>initialize connection to $host</info>");
+        $output->writeln(["<info>initialize connection to $host</info>", '']);
         $cnx = ftp_connect($host) or die("Couldn't connect to $host");
-        $output->writeln("<info>Connecting to $host with provided credentials</info>");
+        $output->writeln(["<info>Connecting to $host with provided credentials</info>", '']);
         if (ftp_login($cnx, $login, $pwd)) {
-            $output->writeln("<info>Connected to $host</info>");
-            $output->writeln("<info>Start sending pictures to $host</info>");
+            $output->writeln(["<info>Connected to $host</info>", '']);
+            $output->writeln(["<info>Start sending pictures to $host</info>", '']);
             $progressBar = new ProgressBar($output, 100);
             $progressBar->setFormat('debug');
-            // $progressBar->start();
             foreach ($progressBar->iterate($pictures) as $currentPic) {
-                // $progressBar->advance();
                 $picName = preg_split("/\//", $currentPic);
                 $fullPathPic = "$path/$picName[6]";
                 ftp_put($cnx, $fullPathPic, $currentPic, FTP_ASCII);
             }
-            // $progressBar->finish();
         }
         ftp_close($cnx);
-        $output->writeln("<info>Pictures were sent</info>");
+        $output->writeln(['', "<info>Pictures were sent</info>", '']);
 
         //rm -f ${LOCAL_PICS_PATH}/$DATE.${PICS_EXT}
-        $output->writeln("<info>Pictures were removed</info>");
+        $output->writeln(["<info>Pictures were removed</info>", '']);
 
         return 0;
     }

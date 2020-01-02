@@ -54,7 +54,7 @@ class TimelapseExec extends Command
             );
             $resolQuestion->setErrorMessage('resolution %s is invalid.');
             $resolution = $resolHelper->ask($input, $output, $resolQuestion);
-            $output->writeln("<info>You've selected $resolution has pictures resolution</info>");
+            $output->writeln(["<info>You've selected $resolution has pictures resolution</info>", '']);
         }
 
         $extension = $input->getOption('extension');
@@ -67,7 +67,7 @@ class TimelapseExec extends Command
             );
             $extQuestion->setErrorMessage('extension %s is invalid.');
             $extension = $extHelper->ask($input, $output, $extQuestion);
-            $output->writeln("<info>You've selected $extension has pictures extension</info>");
+            $output->writeln(["<info>You've selected $extension has pictures extension</info>", '']);
         }
 
         $localPath = $input->getOption('path');
@@ -75,23 +75,23 @@ class TimelapseExec extends Command
             $pathHelper = $this->getHelper('question');
             $pathQuestion = new Question('Please enter the local path location where pictures will store (by default timelapse): ', 'timelapse');
             $localPath = $pathHelper->ask($input, $output, $pathQuestion);
-            $output->writeln("<info>You've selected public/$localPath has local path location</info>");
+            $output->writeln(["<info>You've selected public/$localPath has local path location</info>", '']);
         }
         $date = new DateTime('now');
         $dateFormatted = $date->format('Y-m-d_H:i:s');
-        $extension=\strtolower($extension);
-        
+        $extension = \strtolower($extension);
+
         // TODO maybe unusefull because in future we don't ask for the local path to the user
-        if(!file_exists($localPath) && !is_dir($localPath)){
+        if (!file_exists($localPath) && !is_dir($localPath)) {
             exec("mkdir public/$localPath", $outMakeDir, $retMakeDir);
-            $output->writeln("<info>Local tmp folder public/$localPath has been created</info>");
+            $output->writeln(["<info>Local tmp folder public/$localPath has been created</info>", '']);
         }
         // if(!is_writable($localPath)){
         //     exec("sudo chmod -R 755 $localPath", $outWritable, $retWritable);
         // }
         //TODO add condition if no folder creation error before sur fswebcam command
         exec("fswebcam -r $resolution --no-banner public/$localPath/$dateFormatted.$extension", $outTakePic, $retTakePic);
-        $output->writeln("<info>Picture was taken</info>");
+        $output->writeln(["<info>Picture was taken</info>", '']);
 
         return 0;
     }
