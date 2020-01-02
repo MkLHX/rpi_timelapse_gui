@@ -24,7 +24,7 @@ final class Version20191212104559 extends AbstractMigration
 
         $this->addSql('CREATE TEMPORARY TABLE __temp__timelapse AS SELECT id, resolution, schedule, destination FROM timelapse');
         $this->addSql('DROP TABLE timelapse');
-        $this->addSql('CREATE TABLE timelapse (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, resolution VARCHAR(255) NOT NULL COLLATE BINARY, destination VARCHAR(255) NOT NULL COLLATE BINARY, schedule DATETIME NOT NULL)');
+        $this->addSql('CREATE TABLE timelapse (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, resolution VARCHAR(255) COLLATE BINARY, destination VARCHAR(255) COLLATE BINARY, schedule DATETIME )');
         $this->addSql('INSERT INTO timelapse (id, resolution, schedule, destination) SELECT id, resolution, schedule, destination FROM __temp__timelapse');
         $this->addSql('DROP TABLE __temp__timelapse');
     }
@@ -36,7 +36,7 @@ final class Version20191212104559 extends AbstractMigration
 
         $this->addSql('CREATE TEMPORARY TABLE __temp__timelapse AS SELECT id, resolution, schedule, destination FROM timelapse');
         $this->addSql('DROP TABLE timelapse');
-        $this->addSql('CREATE TABLE timelapse (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, resolution VARCHAR(255) NOT NULL, destination VARCHAR(255) NOT NULL, schedule VARCHAR(255) NOT NULL COLLATE BINARY)');
+        $this->addSql('CREATE TABLE timelapse (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, resolution VARCHAR(255) , destination VARCHAR(255) , schedule VARCHAR(255) COLLATE BINARY)');
         $this->addSql('INSERT INTO timelapse (id, resolution, schedule, destination) SELECT id, resolution, schedule, destination FROM __temp__timelapse');
         $this->addSql('DROP TABLE __temp__timelapse');
     }

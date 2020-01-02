@@ -24,7 +24,7 @@ final class Version20191212134720 extends AbstractMigration
 
         $this->addSql('CREATE TEMPORARY TABLE __temp__ftptransfert AS SELECT id, host, login, password, path, active FROM ftptransfert');
         $this->addSql('DROP TABLE ftptransfert');
-        $this->addSql('CREATE TABLE ftptransfert (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, host VARCHAR(255) NOT NULL COLLATE BINARY, login VARCHAR(255) NOT NULL COLLATE BINARY, password VARCHAR(255) NOT NULL COLLATE BINARY, path VARCHAR(255) NOT NULL COLLATE BINARY, active BOOLEAN NOT NULL)');
+        $this->addSql('CREATE TABLE ftptransfert (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, host VARCHAR(255)  COLLATE BINARY, login VARCHAR(255)  COLLATE BINARY, password VARCHAR(255)  COLLATE BINARY, path VARCHAR(255)  COLLATE BINARY, active BOOLEAN )');
         $this->addSql('INSERT INTO ftptransfert (id, host, login, password, path, active) SELECT id, host, login, password, path, active FROM __temp__ftptransfert');
         $this->addSql('DROP TABLE __temp__ftptransfert');
     }
@@ -36,7 +36,7 @@ final class Version20191212134720 extends AbstractMigration
 
         $this->addSql('CREATE TEMPORARY TABLE __temp__ftptransfert AS SELECT id, host, login, password, path, active FROM ftptransfert');
         $this->addSql('DROP TABLE ftptransfert');
-        $this->addSql('CREATE TABLE ftptransfert (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, host VARCHAR(255) NOT NULL, login VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, path VARCHAR(255) NOT NULL, active BOOLEAN DEFAULT NULL)');
+        $this->addSql('CREATE TABLE ftptransfert (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, host VARCHAR(255) , login VARCHAR(255) , password VARCHAR(255) , path VARCHAR(255) , active BOOLEAN DEFAULT NULL)');
         $this->addSql('INSERT INTO ftptransfert (id, host, login, password, path, active) SELECT id, host, login, password, path, active FROM __temp__ftptransfert');
         $this->addSql('DROP TABLE __temp__ftptransfert');
     }

@@ -32,7 +32,7 @@ final class Version20191212113545 extends AbstractMigration
 
         $this->addSql('CREATE TEMPORARY TABLE __temp__timelapse AS SELECT id, resolution, schedule, path FROM timelapse');
         $this->addSql('DROP TABLE timelapse');
-        $this->addSql('CREATE TABLE timelapse (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, resolution VARCHAR(255) NOT NULL, schedule DATETIME NOT NULL, path VARCHAR(255) NOT NULL)');
+        $this->addSql('CREATE TABLE timelapse (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, resolution VARCHAR(255) , schedule DATETIME , path VARCHAR(255) )');
         $this->addSql('INSERT INTO timelapse (id, resolution, schedule, path) SELECT id, resolution, schedule, path FROM __temp__timelapse');
         $this->addSql('DROP TABLE __temp__timelapse');
     }

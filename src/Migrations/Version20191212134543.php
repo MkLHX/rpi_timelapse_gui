@@ -22,7 +22,7 @@ final class Version20191212134543 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'sqlite', 'Migration can only be executed safely on \'sqlite\'.');
 
-        $this->addSql('ALTER TABLE ftptransfert ADD COLUMN active BOOLEAN NOT NULL');
+        $this->addSql('ALTER TABLE ftptransfert ADD COLUMN active BOOLEAN DEFAULT NULL');
     }
 
     public function down(Schema $schema) : void
@@ -32,7 +32,7 @@ final class Version20191212134543 extends AbstractMigration
 
         $this->addSql('CREATE TEMPORARY TABLE __temp__ftptransfert AS SELECT id, host, login, password, path FROM ftptransfert');
         $this->addSql('DROP TABLE ftptransfert');
-        $this->addSql('CREATE TABLE ftptransfert (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, host VARCHAR(255) NOT NULL, login VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, path VARCHAR(255) NOT NULL)');
+        $this->addSql('CREATE TABLE ftptransfert (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, host VARCHAR(255) , login VARCHAR(255) , password VARCHAR(255) , path VARCHAR(255) )');
         $this->addSql('INSERT INTO ftptransfert (id, host, login, password, path) SELECT id, host, login, password, path FROM __temp__ftptransfert');
         $this->addSql('DROP TABLE __temp__ftptransfert');
     }
