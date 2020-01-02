@@ -38,7 +38,7 @@ class TimelapseType extends AbstractType
             'attr' => [
                 'placeholder' => 'timelapse',
                 'class' => 'form-control',
-                'pattern' => '^([a-zA-Z0-9_]([a-zA-Z0-9-_ ]\/*))*$',
+                'pattern' => '^([a-zA-Z0-9_]([a-zA-Z0-9-_ ]*))*$',
             ]
         ])
         ->add('schedule', TextType::class, [
