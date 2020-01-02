@@ -84,7 +84,7 @@ class TimelapseExec extends Command
         $date = new DateTime('now');
         $dateFormatted = $date->format('Y-m-d_H:i:s');
         $extension=\strtolower($extension);
-        if(!file_exist($localPath) && !is_dir($localPath)){
+        if(!file_exists($localPath) && !is_dir($localPath)){
             \mkdir($localPath);
         }
         if(!is_writable($localPath)){
