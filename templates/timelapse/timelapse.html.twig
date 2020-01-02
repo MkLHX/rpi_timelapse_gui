@@ -23,9 +23,9 @@
 			</div>
 			<div class="col">
 				<div class="row h-100">
-					<div class="col align-self-center text-center py-5">
+					<div class="col align-self-center text-center py-3 py-lg-5">
 						<div id="timelapse-carousel" class="carousel slide" data-ride="carousel" data-interval="false">
-							<ol class="carousel-indicators" style="bottom: -70px !important;">
+							<ol class="carousel-indicators d-none d-lg-flex" style="bottom: -90px !important;">
 								{% for key, picture in pictures %}
 									{% set full_path = picture %}
 									<img src="{{ full_path }}" class="img-fluid mx-1 {% if key == 0 %} active {% endif %}" alt="timelapse-{{ picture }}-indicator" data-target="#timelapse-carousel" data-slide-to="{{key}}" style="width: 4vw !important;">
@@ -39,13 +39,18 @@
 									</div>
 								{% endfor %}
 							</div>
+							<a class="d-flex d-lg-none carousel-control-prev" href="#timelapse-carousel" role="button" data-slide="prev">
+								<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+								<span class="sr-only">Previous</span>
+							</a>
+							<a class="d-flex d-lg-none carousel-control-next" href="#timelapse-carousel" role="button" data-slide="next">
+								<span class="carousel-control-next-icon" aria-hidden="true"></span>
+								<span class="sr-only">Next</span>
+							</a>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<script>
-		$('#').on('submit', function () {});
-	</script>
 {% endblock %}
