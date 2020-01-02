@@ -22,7 +22,7 @@ final class Version20191212113313 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'sqlite', 'Migration can only be executed safely on \'sqlite\'.');
 
-        $this->addSql('ALTER TABLE timelapse ADD COLUMN file_extension VARCHAR(255) NOT NULL');
+        $this->addSql('ALTER TABLE timelapse ADD COLUMN file_extension VARCHAR(255) DEFAULT NULL');
     }
 
     public function down(Schema $schema) : void
