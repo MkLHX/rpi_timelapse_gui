@@ -1,7 +1,7 @@
 #!/bin/bash
 SHELL=/bin/sh
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
-DATE=$(date +"%Y-%m-%d_%H%M")
+DATE=$(date +"%F_%T")
 # Timelapse
 PICS_RESOLUTION="1920/1080"
 PICS_EXT="jpg"
