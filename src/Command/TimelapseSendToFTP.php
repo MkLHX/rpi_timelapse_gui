@@ -98,7 +98,7 @@ class TimelapseSendToFTP extends Command
 
         //get pictures from local path
         $globStr = "$localPath/*.{png,jpeg,jpg,mjpeg}";
-        $pictures = glob($globStr);
+        $pictures = glob($globStr, GLOB_BRACE);
         dump($pictures);
         if (count($pictures) == 0) {
             // stop the command and show warning message if no pictures are found in localPath
