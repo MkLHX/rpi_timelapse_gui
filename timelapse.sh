@@ -13,7 +13,7 @@ FTP_PASS="hWaJT86hfCFdKAcn"         #This is the password for the FTP user.
 FTP_PICS_PATH="/Disque dur/_timelapse"
 
 # 1 - timelapse part
-fswebcam -r ${PICS_RESOLUTION} -p ${PICS_EXT} --no-banner ${LOCAL_PICS_PATH}/$DATE.${PICS_EXT}
+fswebcam -r ${PICS_RESOLUTION} --no-banner ${LOCAL_PICS_PATH}/$DATE.${PICS_EXT}
 
 # 2 - FTP part
 # Call 1. Uses the ftp command with the -inv switches.

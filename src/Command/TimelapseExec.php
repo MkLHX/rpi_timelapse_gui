@@ -83,7 +83,7 @@ class TimelapseExec extends Command
         }
         $date = new DateTime('now');
         $dateFormatted = $date->format('Y-m-d_H:i:s');
-        exec("fswebcam -r $resolution -p $extension --no-banner $localPath/$dateFormatted.$extension", $out, $ret);
+        exec("fswebcam -r $resolution --no-banner $localPath/$dateFormatted.$extension", $out, $ret);
 
         // TODO code the ftp part
 
