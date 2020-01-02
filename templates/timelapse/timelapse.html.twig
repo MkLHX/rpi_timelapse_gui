@@ -24,6 +24,7 @@
 			<div class="col">
 				<div class="row h-100">
 					<div class="col align-self-center text-center py-3 py-lg-5">
+						<p>there is {{ pictures|length }} pics</p>
 						<div id="timelapse-carousel" class="carousel slide" data-ride="carousel" data-interval="false">
 							<ol class="carousel-indicators d-none d-lg-flex" style="bottom: -90px !important;">
 								{% for key, picture in pictures %}
