@@ -130,15 +130,16 @@ class TimelapseSendToFTP extends Command
          * sleep 2
          */
         $output->writeln("<info>initialize connection to $host</info>");
-        exec("ftp -inv $host << EOF", $outFTPInit, $errFTPInit);
-        // $output->writeln("<info>Connecting to $host with provided credentials</info>");
-        exec("user $login $pwd", $outFTPLogin, $errFTPLogin);
-        // $output->writeln("<info>Connected to $host</info>");
-
-        // $output->writeln("<info>Sending pictures to $host</info>");
-        foreach ($pictures as $currentPic) {
-            exec("put $localPath/$currentPic $path/$currentPic", $outFTPLogin, $errFTPLogin);
+        $cnx = ftp_connect($host) or die("Couldn't connect to $host");
+        $output->writeln("<info>Connecting to $host with provided credentials</info>");
+        if (ftp_login($cnx, $login, $pwd)) {
+            $output->writeln("<info>Connected to $host</info>");
+            $output->writeln("<info>Start sending pictures to $host</info>");
+            foreach ($pictures as $currentPic) {
+                ftp_put($cnx, "$path/$currentPic", $localPath/$currentPic, FTP_ASCII);
+            }
         }
+        ftp_close($cnx);
         $output->writeln("<info>Pictures were sent</info>");
 
         //rm -f ${LOCAL_PICS_PATH}/$DATE.${PICS_EXT}
