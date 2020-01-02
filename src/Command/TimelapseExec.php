@@ -31,7 +31,7 @@ class TimelapseExec extends Command
             //fswebcam -r ${PICS_RESOLUTION} -p ${PICS_EXT} --no-banner ${LOCAL_PICS_PATH}/$DATE.${PICS_EXT}
             ->addOption('resolution', 'res', InputOption::VALUE_OPTIONAL, 'resolution of pics')
             ->addOption('extension', 'ext', InputOption::VALUE_OPTIONAL, 'extension of pics')
-            ->addOption('path', 'p', InputOption::VALUE_OPTIONAL, 'local path where store pics')
+            ->addOption('path', 'path', InputOption::VALUE_OPTIONAL, 'local path where store pics')
             ->addOption('ftp_host', 'host', InputOption::VALUE_OPTIONAL, 'ftp host ip addess of domain')
             ->addOption('ftp_login', 'login', InputOption::VALUE_OPTIONAL, 'ftp login, blank if not needed')
             ->addOption('ftp_pass', 'pwd', InputOption::VALUE_OPTIONAL, 'ftp password, blank if not needed')
@@ -43,9 +43,8 @@ class TimelapseExec extends Command
         $io = new SymfonyStyle($input, $output);
 
         $output->writeln([
-            'Execute Timelapse',
-            '============',
-            '',
+            '<info>Execute Timelapse</info>',
+            '<info>============</info>',
         ]);
 
         $resolution = $input->getOption('resolution');
@@ -58,7 +57,7 @@ class TimelapseExec extends Command
             );
             $resolQuestion->setErrorMessage('resolution %s is invalid.');
             $resolution = $resolHelper->ask($input, $output, $resolQuestion);
-            $output->writeln("You've selected $resolution has pics resolution");
+            $output->writeln("<info>You've selected $resolution has pics resolution</info>");
         }
 
         $extension = $input->getOption('extension');
@@ -71,7 +70,7 @@ class TimelapseExec extends Command
             );
             $extQuestion->setErrorMessage('extension %s is invalid.');
             $extension = $extHelper->ask($input, $output, $extQuestion);
-            $output->writeln("You've selected $extension has pics extension");
+            $output->writeln("<info>You've selected $extension has pics extension</info>");
         }
 
         $localPath = $input->getOption('path');
@@ -79,19 +78,21 @@ class TimelapseExec extends Command
             $pathHelper = $this->getHelper('question');
             $pathQuestion = new Question('Please enter the path location for pics storage (by default timelapse): ', 'timelapse');
             $localPath = $pathHelper->ask($input, $output, $pathQuestion);
-            $output->writeln("You've selected public/$localPath has pics local path");
+            $output->writeln("<info>You've selected public/$localPath has pics local path</info>");
         }
         $date = new DateTime('now');
         $dateFormatted = $date->format('Y-m-d_H:i:s');
         $extension=\strtolower($extension);
         if(!file_exists($localPath) && !is_dir($localPath)){
             exec("mkdir public/$localPath", $outMakeDir, $retMakeDir);
+            $output->writeln("<info>Local tmp folder public/$localPath has been created</info>");
         }
         // if(!is_writable($localPath)){
         //     exec("sudo chmod -R 755 $localPath", $outWritable, $retWritable);
         // }
         //TODO add condition if no folder creation error before sur fswebcam command
         exec("fswebcam -r $resolution --no-banner public/$localPath/$dateFormatted.$extension", $outTakePic, $retTakePic);
+        $output->writeln("<info>Picture was taken</info>");
 
         // TODO code the ftp part
         /**
