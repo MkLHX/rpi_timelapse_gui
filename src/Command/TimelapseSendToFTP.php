@@ -89,7 +89,7 @@ class TimelapseSendToFTP extends Command
         }
 
         if (!file_exists($localPath) && !is_dir($localPath)) {
-            $output->writeln("<error>Cannot find local pictures location $localPath</error>");
+            $output->writeln('<error>Cannot find local pictures location ' . $localPath . '</error>');
             return 0;
         }
 
