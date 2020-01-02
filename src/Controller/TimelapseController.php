@@ -66,8 +66,13 @@ class TimelapseController extends AbstractController
 
         if (null != $timelapse->getPath()) {
             # get the lasts pictures in the local path
-            $pictures = glob($timelapse->getPath() . '/*.' . $timelapse->getFileExtension());
-            if(count($pictures) == 0){
+            $globStr = $timelapse->getPath() . '/*.' . \strtolower($timelapse->getFileExtension());
+            $pictures = glob($globStr);
+            if (!$pictures) {
+                //dump('glob errors, cannot find the right pictures path');
+                // show warning message
+            }
+            if (count($pictures) == 0) {
                 # simulate pictures
                 for ($i = 0; $i < rand(5, 50); $i++) {
                     $pictures[] = 'https://via.placeholder.com/1920x1080';
