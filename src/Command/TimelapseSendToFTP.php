@@ -92,13 +92,13 @@ class TimelapseSendToFTP extends Command
         $localPath = $input->getOption('local_path');
         if (!$localPath) {
             $pathHelper = $this->getHelper('question');
-            $localPathQuestion = new Question('Please enter the local path location where pictures are stored (by default public/timelapse_pics): ', $this->parameter->get('app.timelapse_pics_dir'));
+            $localPathQuestion = new Question('Please enter the local path location where pictures are stored (by default ~/public/timelapse_pics): ', $this->parameter->get('app.timelapse_pics_dir'));
             $localPath = $pathHelper->ask($input, $output, $localPathQuestion);
             $output->writeln("<info>You've selected $localPath has local pictures location</info>");
         }
         // TODO maybe unusefull because in future we don't ask for the local path to the user
         if (!file_exists($localPath) && !is_dir($localPath)) {
-            $output->writeln("<error>Cannot find local pictures location</error>");
+            $output->writeln("<error>Cannot find local pictures location $localPath</error>");
             return 0;
         }
 
@@ -110,7 +110,7 @@ class TimelapseSendToFTP extends Command
             // stop the command and show warning message if no pictures are found in localPath
             $output->writeln([
                 '<error>===================================</error>',
-                '<error>Cannot found pictures in $localPath</error>',
+                "<error>Cannot found pictures in $localPath</error>",
                 '<error>Please provide good local path</error>',
                 '<error>===================================</error>',
             ]);
