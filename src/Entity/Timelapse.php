@@ -44,7 +44,7 @@ class Timelapse
     /**
      * @Assert\NotBlank
      * @Assert\Regex(
-     *      pattern="/^(\/[a-zA-Z0-9_]([a-zA-Z0-9-_ ]*))*$/",
+     *      pattern="/^([a-zA-Z0-9_]([a-zA-Z0-9-_ ]\/*))*$/",
      *      match=true,
      *      message="Path should looks /my/timelapse/folder or /my-timelapse/_folder"
      * )
