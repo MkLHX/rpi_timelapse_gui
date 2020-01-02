@@ -136,7 +136,7 @@ class TimelapseSendToFTP extends Command
             $output->writeln("<info>Connected to $host</info>");
             $output->writeln("<info>Start sending pictures to $host</info>");
             foreach ($pictures as $currentPic) {
-                $picName = preg_split("/", $currentPic);
+                $picName = preg_split("/\//", $currentPic);
                 dump($picName[6]);
                 ftp_put($cnx, $path/$picName[6], $currentPic, FTP_ASCII);
             }
