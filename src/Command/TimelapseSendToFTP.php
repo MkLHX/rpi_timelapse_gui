@@ -138,7 +138,9 @@ class TimelapseSendToFTP extends Command
             foreach ($pictures as $currentPic) {
                 $picName = preg_split("/\//", $currentPic);
                 dump($picName[6]);
-                ftp_put($cnx, $path/$picName[6], $currentPic, FTP_ASCII);
+                $fullPathPic = "$path/$picName[6]";
+                dump($fullPathPic);
+                ftp_put($cnx, $fullPathPic, $currentPic, FTP_ASCII);
             }
         }
         ftp_close($cnx);
