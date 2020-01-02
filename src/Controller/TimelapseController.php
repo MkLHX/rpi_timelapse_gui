@@ -91,7 +91,7 @@ class TimelapseController extends AbstractController
     }
 
     /**
-     * @Route("/test", name="_test")
+     * @Route("/timelapse/test", name="_test")
      */
     public function test(Request $request,  KernelInterface $kernel)
     {
@@ -108,6 +108,6 @@ class TimelapseController extends AbstractController
 
         //TODO return result in flash bag
 
-        return $this->redirectToRoute("timelapse_index");
+        return $this->redirectToRoute('timelapse_index');
     }
 }
