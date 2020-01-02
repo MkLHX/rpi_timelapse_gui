@@ -41,31 +41,32 @@ class TimelapseGetConfigAndExec extends Command
 
         $command = $this->getApplication()->find('app:timelapse:exec');
         $output->writeln([
-            '<info>Get Timelapse configuration from db and exec</info>',
-            '<info>============</info>',
+            '<info>===================================</info>',
+            '<info>Get Timelapse configuration from db</info>',
+            '<info>===================================</info>',
+            '',
         ]);
 
         $lastTimelapseConf = $this->em->getRepository(Timelapse::class)->findOneBy([], ['id' => 'DESC']);
         $lastFTPConf = $this->em->getRepository(FTPTransfert::class)->findOneBy(['active' => 1], ['id' => 'DESC']);
 
-        if ($lastTimelapseConf) {
-            $arguments = [
-                'command' => 'app:timelapse:exec',
-                '-res' => $lastTimelapseConf->getResolution(),
-                '-ext' => $lastTimelapseConf->getFileExtension(),
-                '-path' => $lastTimelapseConf->getPath(),
-            ];
-        }else{
+        if (!$lastTimelapseConf) {
             // stop the command and show warning message about config missing
             $output->writeln([
-                '<error>============================================</error>',
+                '<error>===============================================</error>',
                 '<error>There is nothing in db about timelapse settings</error>',
                 '<error>So i can\'t take pics</error>',
-                '<error>============================================</error>',
+                '<error>===============================================</error>',
             ]);
             return 0;
         }
 
+        $arguments = [
+            'command' => 'app:timelapse:exec',
+            '-res' => $lastTimelapseConf->getResolution(),
+            '-ext' => $lastTimelapseConf->getFileExtension(),
+            '-path' => $lastTimelapseConf->getPath(),
+        ];
 
         if ($lastFTPConf && $lastFTPConf->getActive()) {
             $arguments['-host'] = $lastFTPConf->getHost();
