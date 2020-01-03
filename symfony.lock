@@ -75,20 +75,8 @@
     "doctrine/reflection": {
         "version": "v1.0.0"
     },
-    "egulias/email-validator": {
-        "version": "2.1.11"
-    },
-    "hellogerard/jobby": {
-        "version": "v3.4.7"
-    },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
-    },
-    "jeremeamia/superclosure": {
-        "version": "2.4.0"
-    },
-    "mtdowling/cron-expression": {
-        "version": "v1.2.1"
     },
     "nikic/php-parser": {
         "version": "v4.3.0"
@@ -100,7 +88,7 @@
         "version": "2.2.3"
     },
     "php": {
-        "version": "7.2"
+        "version": "7.3"
     },
     "psr/cache": {
         "version": "1.0.1"
@@ -125,9 +113,6 @@
         "files": [
             "./config/packages/sensio_framework_extra.yaml"
         ]
-    },
-    "swiftmailer/swiftmailer": {
-        "version": "v6.2.3"
     },
     "symfony/cache": {
         "version": "v5.0.1"
@@ -252,9 +237,6 @@
     },
     "symfony/polyfill-php73": {
         "version": "v1.13.1"
-    },
-    "symfony/process": {
-        "version": "v5.0.1"
     },
     "symfony/property-access": {
         "version": "v5.0.1"
