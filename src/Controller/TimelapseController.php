@@ -57,9 +57,10 @@ class TimelapseController extends AbstractController
                 '-c' => $timelapse->getSchedule(),
             ]);
 
-            $output = new NullOutput();
+            $output = new BufferedOutput();
             $app->run($input, $output);
-
+            $getCmdResult = $output->fetch();
+            dump($getCmdResult);
             return $this->redirectToRoute('timelapse_index');
         }
 
@@ -113,8 +114,8 @@ class TimelapseController extends AbstractController
 
         $output = new BufferedOutput();
         $application->run($input, $output);
-        $content = $output->fetch();
-
+        $getCmdResult = $output->fetch();
+        dump($getCmdResult);
         //TODO return result in flash bag
 
         return $this->redirectToRoute('timelapse_index');
