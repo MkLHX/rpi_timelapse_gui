@@ -93,7 +93,8 @@ class TimelapseGetConfigAndExec extends Command
                 '-host' => $lastFTPConf->getHost(),
                 '-login' => $lastFTPConf->getLogin(),
                 '-pwd' => $lastFTPConf->getPassword(),
-                '-ftppth' => $lastTimelapseConf->getPath(),
+                '-ftppth' => $lastFTPConf->getPath(),
+                '-locpth' => $lastTimelapseConf->getPath(),
             ];
             $output->writeln([
                 '<info>FTP Configuration loaded</info>',
