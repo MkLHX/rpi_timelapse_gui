@@ -70,8 +70,9 @@ class TimelapseManageCron extends Command
         exec("crontab -l", $outGetCron, $retGetCron);
         // $cronjob = $cron . "php " . $this->parameter->get('%kernel.project_dir%')."bin/console app:timelapse:get-config-and-exec";
         $cronjob = $cron . "php " . $this->kernel->getProjectDir() . "bin/console app:timelapse:get-config-and-exec";
-        file_put_contents('/tmp/crontab.txt', $retGetCron . $cronjob);
-        exec("crontab /tmp/crontab.txt", $outCron, $retCron);
+        $tmpContabFile = $this->parameter->get('app.timelapse_pics_dir').'/crontab.txt';
+        file_put_contents($tmpContabFile, $retGetCron . $cronjob);
+        exec("crontab $tmpContabFile", $outCron, $retCron);
         $output->writeln(["<info>Crontab schedule done!</info>", $retCron, '']);
 
         return 0;
