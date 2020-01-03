@@ -23,12 +23,6 @@ use Symfony\Component\Console\Output\BufferedOutput;
 class TimelapseController extends AbstractController
 {
 
-    /** 
-     *  on install add this in user crontab
-     *  * * * * * cd /path/to/project && php jobby.php 1>> /dev/null 2>&1
-     *  mkdir /tmp/timelapse
-     */
-
     /**
      * @Route("", name="_index")
      */
@@ -92,7 +86,7 @@ class TimelapseController extends AbstractController
     }
 
     /**
-     * @Route("/timelapse/test", name="_test")
+     * @Route("/timelapse/snapshot", name="_snapshot")
      */
     public function test(Request $request,  KernelInterface $kernel)
     {

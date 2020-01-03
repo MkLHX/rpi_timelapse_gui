@@ -134,8 +134,10 @@ class TimelapseSendToFTP extends Command
         ftp_close($cnx);
         $output->writeln(['', "<info>Pictures were sent</info>", '']);
 
+        
+        //TODO give the choice to auto remove pics from local path when they're sent to ftp server
         //rm -f ${LOCAL_PICS_PATH}/$DATE.${PICS_EXT}
-        $output->writeln(["<info>Pictures were removed</info>", '']);
+        // $output->writeln(["<info>Pictures were removed</info>", '']);
 
         return 0;
     }
