@@ -26,12 +26,11 @@
 				<div class="row h-100">
 					<div class="col align-self-center text-center py-3 py-lg-5">
 						<div id="timelapse-carousel" class="carousel slide" data-ride="carousel" data-interval="false">
-							<ol class="carousel-indicators d-none d-lg-flex" style="bottom: -90px !important;">
+							{# <ol class="carousel-indicators d-none d-lg-flex" style="bottom: -90px !important;">
 								{% for key, picture in pictures %}
-									{% set full_path = picture %}
-									<img src="{{ full_path }}" class="img-fluid mx-1 {% if key == 0 %} active {% endif %}" alt="timelapse-indicator-{{ picture }}" data-target="#timelapse-carousel" data-slide-to="{{key}}" style="width: 4vw !important;">
+									<img src="{{ picture }}" class="img-fluid mx-1 {% if key == 0 %} active {% endif %}" alt="timelapse-indicator-{{ picture|split('/')|last }}" data-target="#timelapse-carousel" data-slide-to="{{key}}" style="width: 4vw !important;">
 								{% endfor %}
-							</ol>
+							</ol> #}
 							<div class="carousel-inner">
 								{% for key, picture in pictures %}
 									{% set full_path = picture %}
@@ -49,7 +48,23 @@
 								<span class="sr-only">Next</span>
 							</a>
 						</div>
-						<p>there is {{ pictures|length }} pics</p>
+					</div>
+					{# <p>there is
+																		{{ pictures|length }}
+																		pics</p> #}
+					<div class="col-12 d-none d-lg-flex">
+						<div class="row justify-content-start">
+							{% for key, picture in pictures %}
+								<div class="col-1 align-self-center text-center">
+								<div class="card rounded-0" data-target="#timelapse-carousel" data-slide-to="{{key}}">
+									<img src="{{ picture }}" class="card-img-top w-100" alt="timelapse-pic-{{ picture|split('/')|last }}">
+									<div class="card-body p-1 text-muted">
+										<p class="card-text">{{ picture|split('/')|last }}</p>
+									</div>
+								</div>
+								</div>
+							{% endfor %}
+						</div>
 					</div>
 				</div>
 			</div>
