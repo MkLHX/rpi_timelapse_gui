@@ -16,6 +16,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\Console\Output\NullOutput;
 
 /**
  * @Route("/", name="timelapse")
@@ -26,7 +27,7 @@ class TimelapseController extends AbstractController
     /**
      * @Route("", name="_index")
      */
-    public function index(Request $request, EntityManagerInterface $entityManager, TimelapseRepository $timelapseRepository, FTPTransfertRepository $fTPTransfertRepository)
+    public function index(Request $request, KernelInterface $kernel, EntityManagerInterface $entityManager, TimelapseRepository $timelapseRepository, FTPTransfertRepository $fTPTransfertRepository)
     {
         $timelapse = $timelapseRepository->findOneBy([], ['id' => 'DESC']);
         if (null == $timelapse) {
@@ -46,6 +47,19 @@ class TimelapseController extends AbstractController
             // $timelapse->setPath($this->getParameter('app.timelapse_pics_dir'));
             $entityManager->persist($timelapse);
             $entityManager->flush();
+
+            //TODO edit the crontab with cron command
+            $application = new Application($kernel);
+            $application->setAutoExit(false);
+
+            $input = new ArrayInput([
+                'command' => 'app:timelapse:cron',
+                '-c' => $timelapse->getSchedule(),
+            ]);
+
+            $output = new NullOutput();
+            $application->run($input, $output);
+
             return $this->redirectToRoute('timelapse_index');
         }
 

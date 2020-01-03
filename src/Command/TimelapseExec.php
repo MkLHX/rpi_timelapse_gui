@@ -11,7 +11,6 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Style\SymfonyStyle;
 
 class TimelapseExec extends Command
 {
@@ -35,8 +34,6 @@ class TimelapseExec extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $io = new SymfonyStyle($input, $output);
-
         $output->writeln([
             '<info>==============</info>',
             '<info>Taking picture</info>',
@@ -86,9 +83,7 @@ class TimelapseExec extends Command
             exec("mkdir public/$localPath", $outMakeDir, $retMakeDir);
             $output->writeln(["<info>Local tmp folder public/$localPath has been created</info>", '']);
         }
-        // if(!is_writable($localPath)){
-        //     exec("sudo chmod -R 755 $localPath", $outWritable, $retWritable);
-        // }
+
         //TODO add condition if no folder creation error before sur fswebcam command
         exec("fswebcam -r $resolution --no-banner public/$localPath/$dateFormatted.$extension", $outTakePic, $retTakePic);
         $output->writeln(["<info>Picture was taken</info>", '']);
