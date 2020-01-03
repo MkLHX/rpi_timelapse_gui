@@ -9,15 +9,17 @@ use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Input\InputOption;
 use App\Entity\Timelapse;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class TimelapseManageCron extends Command
 {
     private $em;
+    protected $parameter;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em, ParameterBagInterface $parameter)
     {
         $this->em = $em;
+        $this->parameter = $parameter;
         parent::__construct();
     }
 
@@ -32,12 +34,12 @@ class TimelapseManageCron extends Command
 
             // the full command description shown when running the command with
             // the "--help" option
-            ->setHelp('This command allows you schedule the timelapse execution...')
-            // Arguments
-            ->addOption('cron', '-c', InputOption::VALUE_OPTIONAL, 'crontab config');
+            ->setHelp('This command allows you schedule the timelapse execution...');
+            // // Arguments
+            // ->addOption('cron', '-c', InputOption::VALUE_OPTIONAL, 'crontab config');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output, KernelInterface $kernel)
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln([
             '<info>==================================</info>',
@@ -46,13 +48,13 @@ class TimelapseManageCron extends Command
             '',
         ]);
 
-        $cron = $input->getOption('cron');
-        if (!$cron) {
-            $cronHelper = $this->getHelper('question');
-            $cronQuestion = new Question('Please select the pictures resolution (by default every 15min */15 * * * *): ', '*/15 * * * *');
-            $cron = $cronHelper->ask($input, $output, $cronQuestion);
-            $output->writeln(["<info>You've scheduled timelapse execution every $cron</info>", '']);
-        }
+        // $cron = $input->getOption('cron');
+        // if (!$cron) {
+        //     $cronHelper = $this->getHelper('question');
+        //     $cronQuestion = new Question('Please provide the cronjob schedule (by default every 15min */15 * * * *): ', '*/15 * * * *');
+        //     $cron = $cronHelper->ask($input, $output, $cronQuestion);
+        //     $output->writeln(["<info>You've scheduled timelapse execution every $cron</info>", '']);
+        // }
 
         /**
          * Get timelapse settings from db
@@ -77,7 +79,7 @@ class TimelapseManageCron extends Command
          */
         //TODO check if any timelapse schedule exist
         exec("crontab -l", $outGetCron, $retGetCron);
-        $cronjob = $lastTimelapseConf->getSchedule() . "php " . $kernel->getProjectDir()."bin/console app:timelapse:get-config-and-exec";
+        $cronjob = $lastTimelapseConf->getSchedule() . "php " . $this->parameter->get('%kernel.project_dir%')."bin/console app:timelapse:get-config-and-exec";
         file_put_contents('/tmp/crontab.txt', $retGetCron.$cronjob);
         exec("crontab /tmp/crontab.txt", $outCron, $retCron);
         $output->writeln(["<info>Crontab schedule done!</info>", '']);
