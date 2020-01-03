@@ -37,9 +37,6 @@ class TimelapseGetConfigAndExec extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $io = new SymfonyStyle($input, $output);
-
-        $command = $this->getApplication()->find('app:timelapse:exec');
         $output->writeln([
             '<info>===================================</info>',
             '<info>Getting timelapse configuration from db</info>',
@@ -47,9 +44,10 @@ class TimelapseGetConfigAndExec extends Command
             '',
         ]);
 
+        /**
+         * Get timelapse settings from db
+         */
         $lastTimelapseConf = $this->em->getRepository(Timelapse::class)->findOneBy([], ['id' => 'DESC']);
-        $lastFTPConf = $this->em->getRepository(FTPTransfert::class)->findOneBy(['active' => 1], ['id' => 'DESC']);
-
         if (!$lastTimelapseConf) {
             // stop the command and show warning message about config missing
             $output->writeln([
@@ -60,35 +58,52 @@ class TimelapseGetConfigAndExec extends Command
             ]);
             return 0;
         }
-
-        $arguments = [
+        $execArguments = [
             'command' => 'app:timelapse:exec',
             '-res' => $lastTimelapseConf->getResolution(),
             '-ext' => $lastTimelapseConf->getFileExtension(),
             '-pth' => $lastTimelapseConf->getPath(),
         ];
-
-        if ($lastFTPConf && $lastFTPConf->getActive()) {
-            // $arguments['-host'] = $lastFTPConf->getHost();
-            // $arguments['-login'] = $lastFTPConf->getLogin();
-            // $arguments['-pwd'] = $lastFTPConf->getPassword();
-            // $arguments['-ftppth'] = $lastFTPConf->getPath();
-            // TODO code the ftp part
-            /**
-             * Create a command who make ftp connection and pass on arg the local picture root path
-             * Call the ftp command when picture is take
-             * When picture is sent to the FTP server, remove the picture from the tmp folder
-             * check if there is some arguments about ftp command before run it
-             */
-        }
-
         $output->writeln([
-            '<info>Configuration loaded</info>',
+            '<info>Timelapse Configuration loaded</info>',
             '',
         ]);
-        $execInput = new ArrayInput($arguments);
-        $returnCode = $command->run($execInput, $output);
+        $execInput = new ArrayInput($execArguments);
+        $execCommand = $this->getApplication()->find('app:timelapse:exec');
+        $execReturnCode = $execCommand->run($execInput, $output);
 
-        return $returnCode;
+        /**
+         * I ftp settings are found in db
+         * get them and send pics to ftp server
+         */
+        $lastFTPConf = $this->em->getRepository(FTPTransfert::class)->findOneBy(['active' => 1], ['id' => 'DESC']);
+        if (!$lastFTPConf) {
+            // stop the command and show warning message about config missing
+            $output->writeln([
+                '<error>===============================================</error>',
+                '<error>There is nothing in db about ftp settings</error>',
+                '<error>So i can\'t send pics to ftp sever</error>',
+                '<error>===============================================</error>',
+            ]);
+            return 0;
+        }
+        if ($lastFTPConf->getActive()) {
+            $ftpArguments = [
+                'command' => 'app:timelapse:send-to-ftp',
+                '-host' => $lastFTPConf->getHost(),
+                '-login' => $lastFTPConf->getLogin(),
+                '-pwd' => $lastFTPConf->getPassword(),
+                '-ftppth' => $lastTimelapseConf->getPath(),
+            ];
+            $output->writeln([
+                '<info>FTP Configuration loaded</info>',
+                '',
+            ]);
+            $ftpInput = new ArrayInput($ftpArguments);
+            $ftpCommand = $this->getApplication()->find('app:timelapse:send-to-ftp');
+            $ftpReturnCode = $ftpCommand->run($ftpInput, $output);
+        }
+
+        return $execReturnCode + $ftpReturnCode;
     }
 }
