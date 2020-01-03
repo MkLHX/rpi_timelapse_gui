@@ -49,6 +49,7 @@ class TimelapseController extends AbstractController
         $timelapseForm->handleRequest($request);
         if ($timelapseForm->isSubmitted() && $timelapseForm->isValid()) {
             $timelapse = $timelapseForm->getData();
+            // $timelapse->setPath($this->getParameter('app.timelapse_pics_dir'));
             $entityManager->persist($timelapse);
             $entityManager->flush();
             return $this->redirectToRoute('timelapse_index');

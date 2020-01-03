@@ -10,15 +10,17 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class TimelapseGetConfigAndExec extends Command
 {
     private $em;
+    protected $parameter;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em, ParameterBagInterface $parameter)
     {
         $this->em = $em;
-
+        $this->parameter = $parameter;
         parent::__construct();
     }
     // the name of the command (the part after "bin/console")
@@ -94,7 +96,8 @@ class TimelapseGetConfigAndExec extends Command
                 '-login' => $lastFTPConf->getLogin(),
                 '-pwd' => $lastFTPConf->getPassword(),
                 '-ftppth' => $lastFTPConf->getPath(),
-                '-locpth' => $lastTimelapseConf->getPath(),
+                // '-locpth' => $lastTimelapseConf->getPath(),
+                '-locpth' => $this->parameter->get('app.timelapse_pics_dir'),
             ];
             $output->writeln([
                 '<info>FTP Configuration loaded</info>',
