@@ -10,16 +10,19 @@ use Symfony\Component\Console\Input\InputOption;
 use App\Entity\Timelapse;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 class TimelapseManageCron extends Command
 {
     private $em;
     protected $parameter;
+    protected $kernel;
 
-    public function __construct(EntityManagerInterface $em, ParameterBagInterface $parameter)
+    public function __construct(EntityManagerInterface $em, ParameterBagInterface $parameter, KernelInterface $kernel)
     {
         $this->em = $em;
         $this->parameter = $parameter;
+        $this->kernel = $kernel;
         parent::__construct();
     }
 
@@ -65,10 +68,11 @@ class TimelapseManageCron extends Command
          */
         //TODO check if any timelapse schedule exist
         exec("crontab -l", $outGetCron, $retGetCron);
-        $cronjob = $cron . "php " . $this->parameter->get('%kernel.project_dir%')."bin/console app:timelapse:get-config-and-exec";
-        file_put_contents('/tmp/crontab.txt', $retGetCron.$cronjob);
+        // $cronjob = $cron . "php " . $this->parameter->get('%kernel.project_dir%')."bin/console app:timelapse:get-config-and-exec";
+        $cronjob = $cron . "php " . $this->kernel->getProjectDir() . "bin/console app:timelapse:get-config-and-exec";
+        file_put_contents('/tmp/crontab.txt', $retGetCron . $cronjob);
         exec("crontab /tmp/crontab.txt", $outCron, $retCron);
-        $output->writeln(["<info>Crontab schedule done!</info>", '']);
+        $output->writeln(["<info>Crontab schedule done!</info>", $retCron, '']);
 
         return 0;
     }
