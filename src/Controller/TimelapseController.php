@@ -49,8 +49,8 @@ class TimelapseController extends AbstractController
             $entityManager->flush();
 
             //TODO edit the crontab with cron command
-            $application = new Application($kernel);
-            $application->setAutoExit(false);
+            $app = new Application($kernel);
+            $app->setAutoExit(false);
 
             $input = new ArrayInput([
                 'command' => 'app:timelapse:cron',
@@ -58,7 +58,7 @@ class TimelapseController extends AbstractController
             ]);
 
             $output = new NullOutput();
-            $application->run($input, $output);
+            $app->run($input, $output);
 
             return $this->redirectToRoute('timelapse_index');
         }

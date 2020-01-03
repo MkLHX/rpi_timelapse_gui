@@ -9,18 +9,15 @@ use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Input\InputOption;
 use App\Entity\Timelapse;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 class TimelapseManageCron extends Command
 {
     private $em;
-    protected $parameter;
 
-    public function __construct(EntityManagerInterface $em, ParameterBagInterface $parameter)
+    public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
-        $this->parameter = $parameter;
         parent::__construct();
     }
 
