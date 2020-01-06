@@ -69,24 +69,39 @@ class TimelapseManageCron extends Command
         //TODO check if any timelapse schedule exist
 
         exec("crontab -l", $outGetCron, $retGetCron);
-        dump($outGetCron);
-        dump($retGetCron);
 
         $cronjob = "$cron php " . $this->kernel->getProjectDir() . "/bin/console app:timelapse:get-config-and-exec";
         $tmpCrontabFilePath = $this->parameter->get('app.timelapse_pics_dir') . '/crontab.txt';
 
-        # change permission
+        // change permission
         exec("sudo chown www-data:www-data $tmpCrontabFilePath", $outChangePerm, $retchangePerm);
 
+        /** 
+         * check if any timelapse cronjob exist
+         * if yes, remove it
+         */
+        if (null != $outGetCron) {
+            // first find the comment line //TODO find bestter way
+            $previousCronjobs = preg_grep("/# timelapse cronjob/", $outGetCron);
+            // then delete the cronjob is the next line 
+            foreach (array_keys($previousCronjobs) as $k) {
+                unset($outGetCron[$k+1]);
+            }
+        }
+
         $tmpCrontabFile = fopen($tmpCrontabFilePath, "w");
-        foreach ($outGetCron as $line) {
+        // write existing cronjob
+        foreach ($outGetCron as $key => $line) {
             fwrite($tmpCrontabFile, $line . PHP_EOL);
         }
+        // add comment on cronjob line
+        fwrite($tmpCrontabFile, "# timelapse cronjob" . PHP_EOL);
+        // write cronjob
         fwrite($tmpCrontabFile, $cronjob . PHP_EOL);
         fclose($tmpCrontabFile);
 
         exec("crontab $tmpCrontabFilePath", $outCron, $retCron);
-        $output->writeln(["<info>Crontab schedule done!</info>", $retCron, '']);
+        $output->writeln(["<info>Crontab schedule done!</info>", '']);
 
         return 0;
     }
