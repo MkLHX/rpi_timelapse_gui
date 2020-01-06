@@ -85,6 +85,7 @@ class TimelapseManageCron extends Command
             $previousCronjobs = preg_grep("/# timelapse cronjob/", $outGetCron);
             // then delete the cronjob is the next line 
             foreach (array_keys($previousCronjobs) as $k) {
+                unset($outGetCron[$k]);
                 unset($outGetCron[$k+1]);
             }
         }
