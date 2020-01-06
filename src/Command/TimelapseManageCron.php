@@ -92,8 +92,10 @@ class TimelapseManageCron extends Command
 
         $tmpCrontabFile = fopen($tmpCrontabFilePath, "w");
         // write existing cronjob
-        foreach ($outGetCron as $key => $line) {
-            fwrite($tmpCrontabFile, $line . PHP_EOL);
+        if (null != $outGetCron) {
+            foreach ($outGetCron as $line) {
+                fwrite($tmpCrontabFile, $line . PHP_EOL);
+            }
         }
         // add comment on cronjob line
         fwrite($tmpCrontabFile, "# timelapse cronjob" . PHP_EOL);
