@@ -99,7 +99,7 @@ class TimelapseController extends AbstractController
     }
 
     /**
-     * @Route("/timelapse/snapshot", name="_snapshot")
+     * @Route("timelapse/snapshot", name="_snapshot")
      */
     public function test(Request $request,  KernelInterface $kernel)
     {
@@ -112,6 +112,19 @@ class TimelapseController extends AbstractController
 
         $output = new NullOutput();
         $application->run($input, $output);
+        return $this->redirectToRoute('timelapse_index');
+    }
+
+    /**
+     * @Route("timelapse/remove" , name="_picture_remove")
+     */
+    public function pictureRemove(Request $request)
+    {
+        $picturePath = $request->request->get('picture_path');
+        if (is_file($picturePath)) {
+            unlink($picturePath);
+        }
+        //add flasgbag message to confirm deletion
         return $this->redirectToRoute('timelapse_index');
     }
 }
