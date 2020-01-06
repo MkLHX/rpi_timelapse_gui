@@ -57,10 +57,8 @@ class TimelapseController extends AbstractController
                 '-c' => $timelapse->getSchedule(),
             ]);
 
-            $output = new BufferedOutput();
+            $output = new NullOutput();
             $app->run($input, $output);
-            $getCmdResult = $output->fetch();
-            dd('stop');
             return $this->redirectToRoute('timelapse_index');
         }
 
@@ -112,9 +110,8 @@ class TimelapseController extends AbstractController
             'command' => 'app:timelapse:get-config-and-exec',
         ]);
 
-        $output = new BufferedOutput();
+        $output = new NullOutput();
         $application->run($input, $output);
-        $getCmdResult = $output->fetch();
         return $this->redirectToRoute('timelapse_index');
     }
 }
