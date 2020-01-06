@@ -88,7 +88,7 @@ class TimelapseManageCron extends Command
         $tmpCrontabFilePath = $this->parameter->get('app.timelapse_pics_dir') . '/crontab.txt';
 
         // change permission
-        exec("sudo chown www-data:www-data $tmpCrontabFilePath", $outChangePerm, $retchangePerm);
+        // exec("sudo chown www-data:www-data $tmpCrontabFilePath", $outChangePerm, $retchangePerm);
 
         $tmpCrontabFile = fopen($tmpCrontabFilePath, "w");
         // write existing cronjob
