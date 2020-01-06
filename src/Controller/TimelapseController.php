@@ -99,7 +99,7 @@ class TimelapseController extends AbstractController
     }
 
     /**
-     * @Route("/timelapse/snapshot", methods={"GET"}, name="_snapshot")
+     * @Route("/snapshot", methods={"GET"}, name="_snapshot")
      */
     public function snapshot(Request $request,  KernelInterface $kernel)
     {
@@ -116,7 +116,7 @@ class TimelapseController extends AbstractController
     }
 
     /**
-     * @Route("/timelapse/remove", methods={"GET", "POST"}, name="_picture_remove")
+     * @Route("/remove", methods={"GET", "POST"}, name="_picture_remove")
      */
     public function pictureRemove(Request $request)
     {
