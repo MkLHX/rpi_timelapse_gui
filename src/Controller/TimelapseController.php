@@ -19,13 +19,13 @@ use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\NullOutput;
 
 /**
- * @Route("/", name="timelapse")
+ * @Route("", name="timelapse")
  */
 class TimelapseController extends AbstractController
 {
 
     /**
-     * @Route("", name="_index")
+     * @Route("/", name="_index")
      */
     public function index(Request $request, KernelInterface $kernel, EntityManagerInterface $entityManager, TimelapseRepository $timelapseRepository, FTPTransfertRepository $fTPTransfertRepository)
     {
@@ -99,7 +99,7 @@ class TimelapseController extends AbstractController
     }
 
     /**
-     * @Route("timelapse/snapshot", methods={"GET"}, name="_snapshot")
+     * @Route("/timelapse/snapshot", methods={"GET"}, name="_snapshot")
      */
     public function snapshot(Request $request,  KernelInterface $kernel)
     {
@@ -116,7 +116,7 @@ class TimelapseController extends AbstractController
     }
 
     /**
-     * @Route("timelapse/remove", methods={"GET", "POST"}, name="_picture_remove")
+     * @Route("/timelapse/remove", methods={"GET", "POST"}, name="_picture_remove")
      */
     public function pictureRemove(Request $request)
     {
