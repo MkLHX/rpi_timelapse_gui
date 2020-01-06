@@ -117,7 +117,7 @@ class TimelapseController extends AbstractController
         );
         $application->run($input, $output);
         $retCmd = $output->fetch();
-        dump($retCmd);
+        dd($retCmd);
         return $this->redirectToRoute('timelapse_index');
     }
 
