@@ -15,12 +15,6 @@ Behind the scene a cron task will take a picture by using your settings.
 ### Should Works on every Raspberry Pi with raspbian distribution
 
 ## How to quick install it?
-### clone the repo
-```bash
-git clone https://github.com/MkLHX/rpi_timelapse_gui.git
-
-cd rpi_timelapse_gui
-```
 Just run:
 ```bash
 bash installer.sh
@@ -32,7 +26,12 @@ In manual installation, we assume:
 - you have every dependencies installed 
 > sudo apt-get install git lighttpd php php-fpm php-cgi php-xml php-curl php-gd php-sqlite3 composer fswebcam ftp -y
 
+### clone the repo
+```bash
+git clone https://github.com/MkLHX/rpi_timelapse_gui.git
 
+cd rpi_timelapse_gui
+```
 ### symlink public project folder to you webserver
 ```bash
 sudo ln -s /home/pi/rpi_timelapse_gui/public /var/www/timelapse
