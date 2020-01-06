@@ -118,11 +118,11 @@ class TimelapseController extends AbstractController
     /**
      * @Route("/remove", methods={"GET", "POST"}, name="_picture_remove")
      */
-    public function pictureRemove(Request $request)
+    public function pictureRemove(Request $request,KernelInterface $kernel)
     {
         $picturePath = $request->request->get('_picture_path');
         if (is_file($picturePath)) {
-            unlink($this->getParameter('project_dir') . "/public/$picturePath");
+            unlink($kernel->getProjectDir() . "/public/$picturePath");
         }
         //add flasgbag message to confirm deletion
         return $this->redirectToRoute('timelapse_index');
