@@ -72,7 +72,7 @@ class TimelapseManageCron extends Command
          * if yes, remove it
          */
         exec("crontab -l", $outGetCron, $retGetCron);
-        die($outGetCron);
+        dd($outGetCron);
         if (null != $outGetCron) {
             // first find the comment line //TODO find bestter way
             $previousCronjobs = preg_grep("/# timelapse cronjob/", $outGetCron);
