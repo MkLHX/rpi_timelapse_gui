@@ -68,13 +68,14 @@ class TimelapseManageCron extends Command
          */
         //TODO check if any timelapse schedule exist
         exec("crontab -l", $outGetCron, $retGetCron);
+        dump($retGetCron);
         // $cronjob = $cron . "php " . $this->parameter->get('%kernel.project_dir%')."bin/console app:timelapse:get-config-and-exec";
         $cronjob = $cron . "php " . $this->kernel->getProjectDir() . "bin/console app:timelapse:get-config-and-exec";
-        $tmpContabFilePath = $this->parameter->get('app.timelapse_pics_dir') . '/crontab.txt';
-        // file_put_contents($tmpContabFile, $retGetCron . $cronjob . PHP_EOL);
-        $tmpContabFile = fopen($tmpContabFilePath, "w");
-        fwrite($tmpContabFile, $retGetCron . $cronjob . PHP_EOL);
-        exec("crontab $tmpContabFilePath", $outCron, $retCron);
+        $tmpCrontabFilePath = $this->parameter->get('app.timelapse_pics_dir') . '/crontab.txt';
+        // file_put_contents($tmpCrontabFile, $retGetCron . $cronjob . PHP_EOL);
+        $tmpCrontabFile = fopen($tmpCrontabFilePath, "w+");
+        fwrite($tmpCrontabFile, $retGetCron . $cronjob . PHP_EOL);
+        exec("crontab $tmpCrontabFilePath", $outCron, $retCron);
         $output->writeln(["<info>Crontab schedule done!</info>", $retCron, '']);
 
         return 0;
