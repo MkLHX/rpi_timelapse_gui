@@ -57,7 +57,7 @@ class TimelapseExec extends Command
         if (!$resolution) {
             $resolHelper = $this->getHelper('question');
             $resolQuestion = new ChoiceQuestion(
-                'Please select the pictures resolution (by default 384x288): ',
+                'Please select the pictures resolution (by default 1920x1080): ',
                 ['384x288', '640x480', '1920x1080',],
                 2
             );
