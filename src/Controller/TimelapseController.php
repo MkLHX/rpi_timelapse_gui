@@ -98,6 +98,7 @@ class TimelapseController extends AbstractController
         }
 
         dump(krsort($pictures));
+        dump($pictures);
         return $this->render('timelapse/timelapse.html.twig', [
             'timelapseForm' => $timelapseForm->createView(),
             'ftpForm' => $ftpForm->createView(),
