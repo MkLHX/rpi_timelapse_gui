@@ -99,9 +99,9 @@ class TimelapseController extends AbstractController
     }
 
     /**
-     * @Route("timelapse/snapshot", name="_snapshot")
+     * @Route("timelapse/snapshot", methods={"GET"}, name="_snapshot")
      */
-    public function test(Request $request,  KernelInterface $kernel)
+    public function snapshot(Request $request,  KernelInterface $kernel)
     {
         $application = new Application($kernel);
         $application->setAutoExit(false);
@@ -116,11 +116,11 @@ class TimelapseController extends AbstractController
     }
 
     /**
-     * @Route("timelapse/remove" , name="_picture_remove")
+     * @Route("timelapse/remove", methods={"GET", "POST"}, name="_picture_remove")
      */
     public function pictureRemove(Request $request)
     {
-        $picturePath = $request->request->get('picture_path');
+        $picturePath = $request->request->get('_picture_path');
         if (is_file($picturePath)) {
             unlink($picturePath);
         }

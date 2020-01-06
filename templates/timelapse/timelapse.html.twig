@@ -62,6 +62,7 @@
 										<div class="card-body p-1 text-muted">
 											<p class="card-text font-italic">{{ picture|split('/')|last }}</p>
 											<form class="form-inline" action="{{path('timelapse_picture_remove')}}" method="POST">
+											<input type="hidden" name="_picture_path" id="_picture_path" value="picture">
 												<button class="btn btn-danger">
 													<i class="fas fa-trash"></i>
 												</button>
