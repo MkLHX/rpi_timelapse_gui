@@ -63,7 +63,7 @@ class TimelapseController extends AbstractController
             );
             $application->run($input, $output);
             $retCmd = $output->fetch();
-            dd($retCmd);
+            // dd($retCmd);
 
             return $this->redirectToRoute('timelapse_index');
         }
@@ -124,7 +124,7 @@ class TimelapseController extends AbstractController
         );
         $application->run($input, $output);
         $retCmd = $output->fetch();
-        dd($retCmd);
+        // dd($retCmd);
         return $this->redirectToRoute('timelapse_index');
     }
 

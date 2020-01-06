@@ -52,16 +52,14 @@ EOF
 composer install
 # create database
 php bin/console d:d:c
-# make migrationd
-php bin/console make:migration
-# force u^date db schema
+# force update db schema
 php bin/console d:s:u --force
 # clear symfony cache
 php bin/console c:c
 # fix mode on var
 sudo chmod -R 777 var
 # restart http server
-sudo service lighttpd restart
+sudo service apache2 restart
 
 # set hostname
 hostname="timelapse"
