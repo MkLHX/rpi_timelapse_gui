@@ -66,29 +66,28 @@ class TimelapseManageCron extends Command
          * 3- create a tmp text file to store old and new cron job
          * 4- write crontab
          */
-        //TODO check if any timelapse schedule exist
-
-        exec("crontab -l", $outGetCron, $retGetCron);
-
-        $cronjob = "$cron php " . $this->kernel->getProjectDir() . "/bin/console app:timelapse:get-config-and-exec";
-        $tmpCrontabFilePath = $this->parameter->get('app.timelapse_pics_dir') . '/crontab.txt';
-
-        // change permission
-        exec("sudo chown www-data:www-data $tmpCrontabFilePath", $outChangePerm, $retchangePerm);
 
         /** 
          * check if any timelapse cronjob exist
          * if yes, remove it
          */
+        exec("crontab -l", $outGetCron, $retGetCron);
+        dump($outGetCron);
         if (null != $outGetCron) {
             // first find the comment line //TODO find bestter way
             $previousCronjobs = preg_grep("/# timelapse cronjob/", $outGetCron);
             // then delete the cronjob is the next line 
             foreach (array_keys($previousCronjobs) as $k) {
                 unset($outGetCron[$k]);
-                unset($outGetCron[$k+1]);
+                unset($outGetCron[$k + 1]);
             }
         }
+
+        $cronjob = "$cron php " . $this->kernel->getProjectDir() . "/bin/console app:timelapse:get-config-and-exec";
+        $tmpCrontabFilePath = $this->parameter->get('app.timelapse_pics_dir') . '/crontab.txt';
+
+        // change permission
+        exec("sudo chown www-data:www-data $tmpCrontabFilePath", $outChangePerm, $retchangePerm);
 
         $tmpCrontabFile = fopen($tmpCrontabFilePath, "w");
         // write existing cronjob
