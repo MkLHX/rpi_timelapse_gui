@@ -37,7 +37,7 @@ class TimelapseManageCron extends Command
 
             // the full command description shown when running the command with
             // the "--help" option
-            ->setHelp('This command allows you schedule the timelapse execution...')
+            ->setHelp('This command allows you to schedule the timelapse execution...')
             // Arguments
             ->addOption('cron', '-c', InputOption::VALUE_OPTIONAL, 'crontab config');
     }
@@ -61,18 +61,20 @@ class TimelapseManageCron extends Command
 
         /**
          * 1- get the current crontab content crontab -l
-         * 2- get the project root dir
-         * 3- check if any timelapse cronjob exist
-         * 4- create a tmp text file to store old and new cron job
-         * 5- edit crontab
+         * 2- check if any timelapse cronjob exist
+         * 3- combine existing and new cronjobs on text file
+         * 4- edit crontab
          */
 
         /** 
-         * check if any timelapse cronjob exist
-         * if yes, remove it
+         * get existing cronjobs
          */
         exec("crontab -l", $outGetCron, $retGetCron);
         if (null != $outGetCron) {
+            /** 
+             * check if any timelapse cronjob exist
+             * if yes, remove it
+             */
             // first find the comment line //TODO find bestter way
             $previousCronjobs = preg_grep("/# timelapse cronjob/", $outGetCron);
             // then delete the cronjob is the next line 
@@ -85,7 +87,9 @@ class TimelapseManageCron extends Command
         $tmpCrontabFilePath = $this->parameter->get('app.timelapse_pics_dir') . '/crontab.txt';
 
         $tmpCrontabFile = fopen($tmpCrontabFilePath, "w");
-        // write existing cronjob
+        /**
+         * Combien existing and new cronjobs
+         */
         if (null != $outGetCron) {
             foreach ($outGetCron as $line) {
                 fwrite($tmpCrontabFile, $line . PHP_EOL);
@@ -102,6 +106,9 @@ class TimelapseManageCron extends Command
         fclose($f);
         $output->writeln(["<info>Crontab contains: </info>", "<info>$contents</info>", '']);
 
+        /**
+         * Edit crontab
+         */
         exec("crontab $tmpCrontabFilePath", $outCron, $retCron);
         $output->writeln(["<info>Crontab schedule done!</info>", '']);
 
