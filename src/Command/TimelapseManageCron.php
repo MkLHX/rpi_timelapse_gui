@@ -68,6 +68,7 @@ class TimelapseManageCron extends Command
          */
         //TODO check if any timelapse schedule exist
         exec("crontab -l", $outGetCron, $retGetCron);
+        dump($outGetCron);
         dd($retGetCron);
 
         $cronjob = $cron . " php " . $this->kernel->getProjectDir() . "/bin/console app:timelapse:get-config-and-exec";
