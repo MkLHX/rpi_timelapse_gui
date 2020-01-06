@@ -1,32 +1,49 @@
 {% extends 'base.html.twig' %}
 {% block body %}
 	<div class="container-fluid">
-		<div class="row h-100 bg-secondary" style="min-height: 100vh;">
-			<div class="col-lg-2 bg-light align-self-center pb-3 sticky-top">
+		<div class="row h-100 bg-secondary">
+			<div class="col-lg-2 bg-light align-self-center pb-3 h-100" id="leftside" style="min-height: 100vh;">
 				<div class="col p-3">
 					<h1 class="h3">Timelapse App</h1>
 				</div>
 				<div class="col card p-3 mb-1">
-					<h5>Timelapse Settings</h5>
-					<hr>
-					{{form_start(timelapseForm)}}
-					{{form_errors(timelapseForm)}}
-					{{form_end(timelapseForm)}}
-					<a class="btn btn-warning" href="{{ path('timelapse_snapshot') }}">Take a snapshot</a>
+					<div class="card-header bg-white" id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+						<h5 class="mb-0">
+							<a class="" type="button">
+								Timelapse Settings
+							</a>
+						</h5>
+					</div>
+					<div id="collapseOne" class="collapse show" aria-labelledby="headingOne">
+						<div class="card-body">
+							{{form_start(timelapseForm)}}
+							{{form_errors(timelapseForm)}}
+							{{form_end(timelapseForm)}}
+							<a class="btn btn-warning" href="{{ path('timelapse_snapshot') }}">Take a snapshot</a>
+						</div>
+					</div>
 				</div>
 				<div class="col card p-3 mb-1">
-					<h5>FTP Settings</h5>
-					<hr>
-					{{form_start(ftpForm)}}
-					{{form_errors(ftpForm)}}
-					{{form_end(ftpForm)}}
+					<div class="card-header bg-white" id="headingTwo" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTow">
+						<h5 class="mb-0">
+							<a class="" type="button">
+								FTP Settings
+							</a>
+						</h5>
+					</div>
+					<div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo">
+						<div class="card-body">
+							{{form_start(ftpForm)}}
+							{{form_errors(ftpForm)}}
+							{{form_end(ftpForm)}}
+						</div>
+					</div>
 				</div>
 			</div>
-			<div class="col">
+			<div class="col h-100" style="min-height: 70vh;">
 				<div class="row h-100">
-					<div class="col align-self-center text-center py-3 py-lg-5">
-						<div
-							id="timelapse-carousel" class="carousel slide" data-ride="carousel" data-interval="false">
+					<div class="col align-self-center text-center px-0 px-sm-3 py-3 py-lg-5">
+						<div id="timelapse-carousel" class="carousel slide" data-ride="carousel" data-interval="false">
 							<div class="carousel-inner">
 								{% for key, picture in pictures|reverse %}
 									{% set full_path = picture %}
