@@ -122,7 +122,8 @@ class TimelapseController extends AbstractController
     {
         $picturePath = $request->request->get('_picture_path');
         if (is_file($picturePath)) {
-            unlink($kernel->getProjectDir() . "/public/$picturePath", 0777);
+            // unlink($kernel->getProjectDir() . "/public/$picturePath", 0777);
+            exec("sudo rm ".$kernel->getProjectDir() . "/public/$picturePath", $outRmove,);
         }
         //add flasgbag message to confirm deletion
         return $this->redirectToRoute('timelapse_index');
