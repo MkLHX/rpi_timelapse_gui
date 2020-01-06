@@ -73,17 +73,17 @@ class TimelapseManageCron extends Command
          */
         exec("crontab -l", $outGetCron, $retGetCron);
         dump($outGetCron);
-        dd($retGetCron);
         if (null != $outGetCron) {
             // first find the comment line //TODO find bestter way
             $previousCronjobs = preg_grep("/# timelapse cronjob/", $outGetCron);
+            dump($previousCronjobs);
             // then delete the cronjob is the next line 
             foreach (array_keys($previousCronjobs) as $k) {
                 unset($outGetCron[$k]);
                 unset($outGetCron[$k + 1]);
             }
         }
-
+        dump($outGetCron);
         $cronjob = "$cron php " . $this->kernel->getProjectDir() . "/bin/console app:timelapse:get-config-and-exec";
         $tmpCrontabFilePath = $this->parameter->get('app.timelapse_pics_dir') . '/crontab.txt';
 
