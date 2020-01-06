@@ -85,7 +85,7 @@ class TimelapseExec extends Command
         }
 
         //TODO add condition if no folder creation error before sur fswebcam command
-        exec("fswebcam -r $resolution --no-banner public/$localPath/$dateFormatted.$extension", $outTakePic, $retTakePic);
+        exec("sudo fswebcam -r $resolution --no-banner public/$localPath/$dateFormatted.$extension", $outTakePic, $retTakePic);
         $output->writeln(["<info>Picture was taken</info>", '']);
 
         return 0;
