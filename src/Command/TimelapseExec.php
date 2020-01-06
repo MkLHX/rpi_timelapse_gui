@@ -11,9 +11,21 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 class TimelapseExec extends Command
 {
+    protected $parameter;
+    protected $kernel;
+
+    public function __construct(ParameterBagInterface $parameter, KernelInterface $kernel)
+    {
+        $this->parameter = $parameter;
+        $this->kernel = $kernel;
+        parent::__construct();
+    }
+
     // the name of the command (the part after "bin/console")
     protected static $defaultName = 'app:timelapse:exec';
 
@@ -67,26 +79,30 @@ class TimelapseExec extends Command
             $output->writeln(["<info>You've selected $extension has pictures extension</info>", '']);
         }
 
-        $localPath = $input->getOption('path');
-        if (!$localPath) {
-            $pathHelper = $this->getHelper('question');
-            $pathQuestion = new Question('Please enter the local path location where pictures will store (by default timelapse_pics): ', 'timelapse_pics');
-            $localPath = $pathHelper->ask($input, $output, $pathQuestion);
-            $output->writeln(["<info>You've selected public/$localPath has local path location</info>", '']);
-        }
+        // $localPath = $input->getOption('path');
+        // if (!$localPath) {
+        //     $pathHelper = $this->getHelper('question');
+        //     $pathQuestion = new Question('Please enter the local path location where pictures will store (by default timelapse_pics): ', 'timelapse_pics');
+        //     $localPath = $pathHelper->ask($input, $output, $pathQuestion);
+        //     $output->writeln(["<info>You've selected public/$localPath has local path location</info>", '']);
+        // }
+
         $date = new DateTime('now');
         $dateFormatted = $date->format('Y-m-d_H:i:s');
         $extension = \strtolower($extension);
 
         // TODO maybe unusefull because in future we don't ask for the local path to the user
-        if (!file_exists($localPath) && !is_dir($localPath)) {
-            exec("mkdir public/$localPath", $outMakeDir, $retMakeDir);
-            $output->writeln(["<info>Local tmp folder public/$localPath has been created</info>", '']);
-        }
+        // if (!file_exists($localPath) && !is_dir($localPath)) {
+        //     exec("mkdir public/$localPath", $outMakeDir, $retMakeDir);
+        //     $output->writeln(["<info>Local tmp folder public/$localPath has been created</info>", '']);
+        // }
 
         //TODO add condition if no folder creation error before sur fswebcam command
-        exec("sudo fswebcam -r $resolution --no-banner public/$localPath/$dateFormatted.$extension", $outTakePic, $retTakePic);
-        $output->writeln(["<info>Picture was taken</info>", '']);
+
+        $picsFolder = $this->parameter->get('app.timelapse_pics_dir');
+        // exec("sudo fswebcam -r $resolution --no-banner public/$localPath/$dateFormatted.$extension", $outTakePic, $retTakePic);
+        exec("sudo fswebcam -r $resolution --no-banner $picsFolder/$dateFormatted.$extension", $outTakePic, $retTakePic);
+        $output->writeln(["<info>$picsFolder/$dateFormatted.$extension</info>", "<info>Picture was taken</info>", '']);
 
         return 0;
     }
