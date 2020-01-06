@@ -78,9 +78,9 @@ class TimelapseManageCron extends Command
         # change permission
         exec("sudo chown www-data:www-data $tmpCrontabFilePath", $outChangePerm, $retchangePerm);
 
-        $tmpCrontabFile = fopen($tmpCrontabFilePath, "w+");
+        $tmpCrontabFile = fopen($tmpCrontabFilePath, "w");
         foreach ($outGetCron as $line) {
-            fwrite($tmpCrontabFile, $outGetCron);
+            fwrite($tmpCrontabFile, $line . PHP_EOL);
         }
         fwrite($tmpCrontabFile, $cronjob . PHP_EOL);
         fclose($tmpCrontabFile);
