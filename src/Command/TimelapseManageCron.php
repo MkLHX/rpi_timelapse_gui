@@ -83,7 +83,7 @@ class TimelapseManageCron extends Command
                 unset($outGetCron[$k + 1]);
             }
         }
-        dd($outGetCron);
+        dump($outGetCron);
         $cronjob = "$cron php " . $this->kernel->getProjectDir() . "/bin/console app:timelapse:get-config-and-exec";
         $tmpCrontabFilePath = $this->parameter->get('app.timelapse_pics_dir') . '/crontab.txt';
 
@@ -102,6 +102,12 @@ class TimelapseManageCron extends Command
         // write cronjob
         fwrite($tmpCrontabFile, $cronjob . PHP_EOL);
         fclose($tmpCrontabFile);
+
+
+        $f = fopen($tmpCrontabFilePath, "r");
+        $contents = fread($f, filesize($tmpCrontabFilePath));
+        fclose($f);
+        dump($contents);
 
         // exec("crontab $tmpCrontabFilePath", $outCron, $retCron);
         $output->writeln(["<info>Crontab schedule done!</info>", '']);
