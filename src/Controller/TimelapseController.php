@@ -48,7 +48,7 @@ class TimelapseController extends AbstractController
             $entityManager->persist($timelapse);
             $entityManager->flush();
 
-            //TODO edit the crontab with cron command
+            // edit the crontab
             $app = new Application($kernel);
             $app->setAutoExit(false);
 

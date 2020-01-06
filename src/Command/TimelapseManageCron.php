@@ -51,7 +51,6 @@ class TimelapseManageCron extends Command
             '',
         ]);
 
-        //TODO regex validation for cronjob format
         $cron = $input->getOption('cron');
         if (!$cron) {
             $cronHelper = $this->getHelper('question');
@@ -63,8 +62,9 @@ class TimelapseManageCron extends Command
         /**
          * 1- get the current crontab content crontab -l
          * 2- get the project root dir
-         * 3- create a tmp text file to store old and new cron job
-         * 4- write crontab
+         * 3- check if any timelapse cronjob exist
+         * 4- create a tmp text file to store old and new cron job
+         * 5- edit crontab
          */
 
         /** 
@@ -72,23 +72,17 @@ class TimelapseManageCron extends Command
          * if yes, remove it
          */
         exec("crontab -l", $outGetCron, $retGetCron);
-        dump($outGetCron);
         if (null != $outGetCron) {
             // first find the comment line //TODO find bestter way
             $previousCronjobs = preg_grep("/# timelapse cronjob/", $outGetCron);
-            dump($previousCronjobs);
             // then delete the cronjob is the next line 
             foreach (array_keys($previousCronjobs) as $k) {
                 unset($outGetCron[$k]);
                 unset($outGetCron[$k + 1]);
             }
         }
-        dump($outGetCron);
         $cronjob = "$cron php " . $this->kernel->getProjectDir() . "/bin/console app:timelapse:get-config-and-exec";
         $tmpCrontabFilePath = $this->parameter->get('app.timelapse_pics_dir') . '/crontab.txt';
-
-        // change permission
-        // exec("sudo chown www-data:www-data $tmpCrontabFilePath", $outChangePerm, $retchangePerm);
 
         $tmpCrontabFile = fopen($tmpCrontabFilePath, "w");
         // write existing cronjob
@@ -104,10 +98,10 @@ class TimelapseManageCron extends Command
         fclose($tmpCrontabFile);
 
 
-        $f = fopen($tmpCrontabFilePath, "r");
-        $contents = fread($f, filesize($tmpCrontabFilePath));
-        fclose($f);
-        dump($contents);
+        // $f = fopen($tmpCrontabFilePath, "r");
+        // $contents = fread($f, filesize($tmpCrontabFilePath));
+        // fclose($f);
+        // dump($contents);
 
         exec("crontab $tmpCrontabFilePath", $outCron, $retCron);
         $output->writeln(["<info>Crontab schedule done!</info>", '']);
