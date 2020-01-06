@@ -74,6 +74,9 @@ class TimelapseManageCron extends Command
         $tmpCrontabFilePath = $this->parameter->get('app.timelapse_pics_dir') . '/crontab.txt';
         // file_put_contents($tmpCrontabFile, $retGetCron . $cronjob . PHP_EOL);
         $tmpCrontabFile = fopen($tmpCrontabFilePath, "w+");
+        # change permission
+        exec("sudo chown pi:www-data $tmpCrontabFilePath");
+
         fwrite($tmpCrontabFile, $retGetCron . $cronjob . PHP_EOL);
         exec("crontab $tmpCrontabFilePath", $outCron, $retCron);
         $output->writeln(["<info>Crontab schedule done!</info>", $retCron, '']);

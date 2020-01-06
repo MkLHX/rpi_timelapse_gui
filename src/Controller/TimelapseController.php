@@ -60,7 +60,6 @@ class TimelapseController extends AbstractController
             $output = new BufferedOutput();
             $app->run($input, $output);
             $getCmdResult = $output->fetch();
-            dd($getCmdResult);
             return $this->redirectToRoute('timelapse_index');
         }
 
@@ -115,9 +114,6 @@ class TimelapseController extends AbstractController
         $output = new BufferedOutput();
         $application->run($input, $output);
         $getCmdResult = $output->fetch();
-        dump($getCmdResult);
-        //TODO return result in flash bag
-
         return $this->redirectToRoute('timelapse_index');
     }
 }
