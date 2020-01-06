@@ -17,6 +17,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\NullOutput;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @Route("", name="timelapse")
@@ -110,26 +111,23 @@ class TimelapseController extends AbstractController
             'command' => 'app:timelapse:get-config-and-exec',
         ]);
 
-        $output = new NullOutput();
+        $output = new BufferedOutput(
+            OutputInterface::VERBOSITY_NORMAL,
+            true // true for decorated
+        );
         $application->run($input, $output);
+        $retCmd = $output->fetch();
+        dump($retCmd);
         return $this->redirectToRoute('timelapse_index');
     }
 
     /**
-     * @Route("/remove", methods={"GET", "POST"}, name="_picture_remove")
+     * @Route("/remove", methods={"POST"}, name="_picture_remove")
      */
     public function pictureRemove(Request $request, KernelInterface $kernel)
     {
         $picturePath = $request->request->get('_picture_path');
-        // $picsPath = $kernel->getProjectDir() . "/public/timelapse_pics";
-        // dump(is_writable($picsPath));
-        // if (!is_writable($picsPath)) {
-        //     chmod($picsPath, 0750);
-        //     dump(is_writable($picsPath));
-        // }
-        // dump($kernel->getProjectDir() . "/public/$picturePath");
         unlink($kernel->getProjectDir() . "/public/$picturePath");
-        // dd($r);
         //add flasgbag message to confirm deletion
         return $this->redirectToRoute('timelapse_index');
     }
