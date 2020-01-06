@@ -47,7 +47,7 @@ class TimelapseExec extends Command
             $resolQuestion = new ChoiceQuestion(
                 'Please select the pictures resolution (by default 384x288): ',
                 ['384x288', '640x480', '1920x1080',],
-                0
+                2
             );
             $resolQuestion->setErrorMessage('resolution %s is invalid.');
             $resolution = $resolHelper->ask($input, $output, $resolQuestion);
