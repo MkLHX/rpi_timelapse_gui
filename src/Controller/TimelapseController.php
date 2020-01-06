@@ -121,14 +121,15 @@ class TimelapseController extends AbstractController
     public function pictureRemove(Request $request, KernelInterface $kernel)
     {
         $picturePath = $request->request->get('_picture_path');
-        $picsPath = $kernel->getProjectDir() . "/public/timelapse_pics";
-        dump(is_writable($picsPath));
-        if (!is_writable($picsPath)) {
-            chmod($picsPath, 0750);
-        }
-        dump($kernel->getProjectDir() . "/public/$picturePath");
-        $r = unlink($kernel->getProjectDir() . "/public/$picturePath");
-        dd($r);
+        // $picsPath = $kernel->getProjectDir() . "/public/timelapse_pics";
+        // dump(is_writable($picsPath));
+        // if (!is_writable($picsPath)) {
+        //     chmod($picsPath, 0750);
+        //     dump(is_writable($picsPath));
+        // }
+        // dump($kernel->getProjectDir() . "/public/$picturePath");
+        unlink($kernel->getProjectDir() . "/public/$picturePath");
+        // dd($r);
         //add flasgbag message to confirm deletion
         return $this->redirectToRoute('timelapse_index');
     }
