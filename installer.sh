@@ -3,15 +3,34 @@ SHELL=/bin/sh
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
 ## install dependencies
-sudo apt-get update && sudo apt-get install git lighttpd php php-fpm php-cgi php-xml php-curl php-gd php-sqlite3 composer fswebcam ftp -y
+sudo apt-get update && sudo apt-get install git php php-fpm php-cgi php-xml php-curl php-gd php-sqlite3 composer fswebcam ftp -y
 
-## configure lighttpd server
-# enable lighttpd
-sudo lighttpd-enable-mod fastcgi-php
-sudo service lighttpd force-reload
-sudo service lighttpd restart
-#sudo systemctl restart lighttpd.service || install_error "Unable to restart lighttpd"
+# apache2 settings
+cat > /etc/apache2/sites-available/timelapse.conf << EOF
+<VirtualHost *:80>
+        #ServerName timelapse.local
+        #ServerAlias timelapse.local
 
+        #ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/html
+
+        ErrorLog ${APACHE_LOG_DIR}/timelapse.error.log
+        #CustomLog ${APACHE_LOG_DIR}/timelapse.access.log combined
+
+        <Directory /var/www/html>
+                AllowOverride None
+                Order Allow,Deny
+                Allow from All
+                FallbackResource /index.php
+        </Directory>
+        <Directory /var/www/html/public/bundles>
+                FallbackResource disabled
+        </Directory>
+
+</VirtualHost>
+EOF
+sudo systemctl enable apache2.service
+sudo systemctl start apache2.service
 
 ## Deploy Symfony project
 # save current html folder
