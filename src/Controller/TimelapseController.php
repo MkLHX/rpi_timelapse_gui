@@ -121,6 +121,7 @@ class TimelapseController extends AbstractController
     public function pictureRemove(Request $request, KernelInterface $kernel)
     {
         $picturePath = $request->request->get('_picture_path');
+        dump("sudo rm " . $kernel->getProjectDir() . "/public/$picturePath");
         exec("sudo rm " . $kernel->getProjectDir() . "/public/$picturePath", $outPicRemove, $retPicRemove);
         dump($outPicRemove);
         dd($retPicRemove);
