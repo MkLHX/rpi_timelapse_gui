@@ -114,7 +114,10 @@ class TimelapseController extends AbstractController
         $application->setAutoExit(false);
 
         $input = new ArrayInput([
-            'command' => 'app:timelapse:get-config-and-exec',
+            'command' => 'app:timelapse:exec',
+            '-res' => '1920x1080',
+            '-ext' => 'PNG',
+            '-pth' => $this->getParameter('app.timelapse_pics_dir'),
         ]);
 
         $output = new BufferedOutput(
