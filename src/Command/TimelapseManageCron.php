@@ -100,7 +100,7 @@ class TimelapseManageCron extends Command
         $f = fopen($tmpCrontabFilePath, "r");
         $contents = fread($f, filesize($tmpCrontabFilePath));
         fclose($f);
-        $output->writeln(["<info>Crontab contains $contents</info>", '']);
+        $output->writeln(["<info>Crontab contains: </info>", "<info>$contents</info>", '']);
 
         exec("crontab $tmpCrontabFilePath", $outCron, $retCron);
         $output->writeln(["<info>Crontab schedule done!</info>", '']);
