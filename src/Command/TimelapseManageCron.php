@@ -97,11 +97,10 @@ class TimelapseManageCron extends Command
         fwrite($tmpCrontabFile, $cronjob . PHP_EOL);
         fclose($tmpCrontabFile);
 
-
-        // $f = fopen($tmpCrontabFilePath, "r");
-        // $contents = fread($f, filesize($tmpCrontabFilePath));
-        // fclose($f);
-        // dump($contents);
+        $f = fopen($tmpCrontabFilePath, "r");
+        $contents = fread($f, filesize($tmpCrontabFilePath));
+        fclose($f);
+        $output->writeln(["<info>Crontab contains $contents</info>", '']);
 
         exec("crontab $tmpCrontabFilePath", $outCron, $retCron);
         $output->writeln(["<info>Crontab schedule done!</info>", '']);
