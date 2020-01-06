@@ -34,19 +34,17 @@ sudo systemctl start apache2.service
 
 ## Deploy Symfony project
 # save current html folder
-sudo cp /var/www/html /var/www/html.save
+sudo cp -r /var/www/html /var/www/html.save
 # create symlink from project to http folder
-# TODO use current user localtion
-sudo ln -s /home/pi/rpi_timelapse_gui/public /var/www/html
+sudo ln -s public /var/www/html
 # fix ownership
 sudo chown -R www-data:www-data /var/www/html
-#sudo chown -R www-data:www-data /home/pi/rpi_timelapse_gui/public
 
 # edit .env.local with db name and path
 sudo bash -c 'cat > .env.local' << EOF
 APP_ENV=prod
 APP_SECRET=mysecretisawesome
-DATABASE_URL="sqlite:///%kernel_project_dir%/var/timelapse.db"
+DATABASE_URL="sqlite:///%kernel.project_dir%/var/timelapse.db"
 EOF
 
 ## deploy symfony project

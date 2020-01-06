@@ -46,7 +46,7 @@ sudo chown -R www-data:www-data /var/www/timelapse
 ```bash
 APP_ENV=prod
 APP_SECRET=mysecretisawesome
-DATABASE_URL="sqlite:///%kernel_project_dir%/var/timelapse.db"
+DATABASE_URL="sqlite:///%kernel.project_dir%/var/timelapse.db"
 ```
 ### install project dependencies
 ```bash
