@@ -2,7 +2,7 @@
 {% block body %}
 	<div class="container-fluid">
 		<div class="row h-100 bg-secondary">
-			<div class="col-lg-2 bg-light align-self-center pb-3 h-100" id="leftside">
+			<div class="col-lg-2 bg-light align-self-center" id="leftside">
 				<div class="col p-3">
 					<h1 class="h3">Timelapse App</h1>
 				</div>
@@ -40,15 +40,15 @@
 					</div>
 				</div>
 			</div>
-			<div class="col">
-				<div class="row h-100" style="min-height: 65vh;">
-					<div class="col align-self-center text-center px-0 px-sm-3 py-3 py-lg-5">
+			<div class="col" id="rightside">
+				<div class="row h-100">
+					<div class="col align-self-center text-center px-2 py-0">
 						<div id="timelapse-carousel" class="carousel slide" data-ride="carousel" data-interval="false">
 							<div class="carousel-inner">
 								{% for key, picture in pictures|reverse %}
 									{% set full_path = picture %}
 									<div class="carousel-item {% if loop.index0 == 0 %} active {% endif %}">
-										<img src="{{ full_path }}" class="img-fluid w-75" alt="timelapse-{{ picture }}">
+										<img src="{{ full_path }}" class="img-fluid w-100" alt="timelapse-{{ picture }}">
 									</div>
 								{% endfor %}
 							</div>
@@ -63,17 +63,18 @@
 						</div>
 					</div>
 					{# <p>there is {{ pictures|length }} pics</p> #}
-					<div class="col-12 d-none d-lg-flex">
+					{# <div class="col-12 d-none d-lg-flex"> #}
+					<div class="col-12">
 						<div class="row justify-content-start">
 							{% for key, picture in pictures|reverse %}
-								<div class="col-2 col-lg-1 align-self-center text-center">
+								<div class="col-4 col-lg-1 align-self-center text-center p-1 p-lg-2 mb-1">
 									<div class="card rounded-0" data-target="#timelapse-carousel" data-slide-to="{{key}}">
 										<img src="{{ picture }}" class="card-img-top w-100" alt="timelapse-pic-{{ picture|split('/')|last }}">
-										<div class="card-body p-1 text-muted">
+										<div class="card-body p-1 text-muted d-none d-lg-block">
 											<p class="card-text font-italic">{{ picture|split('/')|last }}</p>
 										</div>
 									</div>
-									<div class="card-footer p-1 bg-white">
+									<div class="card-footer p-1 bg-white d-none d-lg-block">
 										<form class="form-inline" action="{{path('timelapse_picture_remove')}}" method="POST">
 											<input type="hidden" name="_picture_path" id="_picture_path" value="{{picture}}">
 											<button class="btn btn-danger" type="submit">

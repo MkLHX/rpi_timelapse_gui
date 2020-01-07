@@ -1,3 +1,18 @@
 body {
     background-color: lightgray;
 }
+
+/* Media queries */
+@media (max-width: 992px){
+    #rightside {
+        min-height: 80vh;
+    }
+}
+@media (min-width: 991px) {
+    #leftside {
+        min-height: 100vh;
+    }
+    .carousel-inner img { 
+        width: 80% !important;
+    }
+}
