@@ -48,7 +48,7 @@
 								{% for key, picture in pictures|reverse %}
 									{% set full_path = picture %}
 									<div class="carousel-item {% if loop.index0 == 0 %} active {% endif %}">
-										<img src="{{ full_path }}" class="img-fluid w-100" alt="timelapse-{{ picture }}">
+										<img src="{{ full_path }}" class="img-fluid" alt="timelapse-{{ picture }}">
 									</div>
 								{% endfor %}
 							</div>

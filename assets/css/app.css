@@ -2,17 +2,21 @@ body {
     background-color: lightgray;
 }
 
+.carousel-inner img { 
+    width: 80% !important;
+}
+
 /* Media queries */
 @media (max-width: 992px){
     #rightside {
         min-height: 80vh;
     }
+    .carousel-inner img { 
+        width: 100% !important;
+    }
 }
 @media (min-width: 991px) {
     #leftside {
         min-height: 100vh;
-    }
-    .carousel-inner img { 
-        width: 80% !important;
     }
 }

@@ -3,7 +3,7 @@ SHELL=/bin/sh
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
 ## install dependencies
-sudo apt-get update && sudo apt-get install git php php-fpm php-cgi php-xml php-curl php-gd php-sqlite3 composer fswebcam ftp -y
+sudo apt-get update && sudo apt-get install git php php-fpm php-cgi php-xml php-curl php-gd php-sqlite3 composer fswebcam ftp yarn -y
 
 # apache2 settings
 cat > /etc/apache2/sites-available/timelapse.conf << EOF
@@ -58,6 +58,10 @@ php bin/console d:s:u --force
 php bin/console c:c
 # fix mode on var
 sudo chmod -R 777 var
+# install front assest
+yarn install
+# build js and css
+yarn encore production
 # restart http server
 sudo service apache2 restart
 
