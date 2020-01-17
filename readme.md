@@ -4,7 +4,7 @@
 Because i need a timelapse solution who people can use it and install it easyly on raspberry pi and to test the new Symfony 5.
 
 
-## How it's work?
+## How it's works?
 Just set timelapse parameters and save it. 
 
 Behind the scene a cron task will take a picture by using your settings.
@@ -24,7 +24,7 @@ bash installer.sh
 In manual installation, we assume:
 - you have a http webserver like Apache2 / Nginx or Lighttpd and you manage configuration
 - you have every dependencies installed 
-> sudo apt-get install git lighttpd php php-fpm php-cgi php-xml php-curl php-gd php-sqlite3 composer fswebcam ftp -y
+> sudo apt-get install git cron php php-fpm php-cgi php-xml php-curl php-gd php-sqlite3 composer fswebcam ftp -y
 
 ### clone the repo
 ```bash
