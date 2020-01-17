@@ -77,9 +77,11 @@
 									<div class="card-footer p-1 bg-white d-none d-lg-block">
 										<form class="form-inline" action="{{path('timelapse_picture_remove')}}" method="POST">
 											<input type="hidden" name="_picture_path" id="_picture_path" value="{{picture}}">
+											{% if "via.placehloder.com" not in picture %}
 											<button class="btn btn-danger" type="submit">
 												<i class="fas fa-trash"></i>
 											</button>
+											{% endif %}
 										</form>
 									</div>
 								</div>
