@@ -17,6 +17,8 @@ Behind the scene a cron task will take a picture by using your settings.
 ## How to quick install it?
 Just run:
 ```bash
+wget https://raw.githubusercontent.com/MkLHX/rpi_timelapse_gui/master/installer.sh
+chmod +x installer.sh
 bash installer.sh
 ```
 
