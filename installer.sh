@@ -17,7 +17,7 @@ sudo apt-get update && sudo apt-get install yarn
 sudo apt-get autoremove -y
 
 # apache2 settings
-cat > /etc/apache2/sites-available/timelapse.conf << EOF
+sudo bash -c 'cat > /etc/apache2/sites-available/timelapse.conf' << EOF
 <VirtualHost *:80>
         #ServerName timelapse.local
         #ServerAlias timelapse.local
@@ -39,6 +39,7 @@ cat > /etc/apache2/sites-available/timelapse.conf << EOF
         </Directory>
 
 </VirtualHost>
+
 EOF
 sudo systemctl enable apache2.service
 sudo systemctl start apache2.service
@@ -56,6 +57,7 @@ sudo bash -c 'cat > .env.local' << EOF
 APP_ENV=prod
 APP_SECRET=mysecretisawesome
 DATABASE_URL="sqlite:///%kernel.project_dir%/var/timelapse.db"
+
 EOF
 
 ## deploy symfony project
